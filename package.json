@@ -2,7 +2,7 @@
   "name": "frontend",
   "version": "0.0.0",
   "scripts": {
-    "build": "node backend/server.js",
+    "build": "ng build",
     "start": "ng serve"
   },
   "private": true,
