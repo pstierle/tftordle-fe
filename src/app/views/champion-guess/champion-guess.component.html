@@ -1,0 +1,125 @@
+<div class="flex flex-col gap-5 max-w-xl">
+  <div
+    class="p-5 rounded flex flex-col gap-3 items-center border-2"
+    [style.backgroundColor]="'#1E2328'"
+    [style.borderColor]="'#AE9667'"
+  >
+    <p class="font-semibold text-xl">
+      Guess today's Teamfight Tactics champion!
+    </p>
+    <div class="flex gap-2 items-center">
+      <app-question-mark-icon
+        class="text-gray-400 w-4 h-4 flex-shrink-0"
+      ></app-question-mark-icon>
+      <p class="text-sm text-gray-400" *ngIf="!displayClue; else clue">
+        Set Clue in
+        <span class="text-white font-bold">{{ clueCounter }}</span> tries.
+      </p>
+      <ng-template #clue>
+        <p class="text-sm text-gray-400">Set Clue: TODO</p>
+      </ng-template>
+    </div>
+  </div>
+
+  <p class="w-full font-semibold text-center" *ngIf="finished">
+    You Correctly guessed the Champion! Wokejj
+  </p>
+
+  <div class="flex flex-col gap-2 items-center justify-center">
+    <div
+      *ngFor="let guess of wrongGuesses$ | async"
+      [style.backgroundColor]="'#1E2328'"
+      class="flex items-center gap-2 py-2 px-4"
+    >
+      <div class="flex flex-col gap-1 items-center">
+        <p class="font-bold">{{ guess.name }}</p>
+        <img
+          [src]="
+            apiUrl + '/' + guess.set + '/champions/' + guess.imageName + '.png'
+          "
+          alt="Logo"
+          class="w-10 h-10"
+          *ngIf="guess.imageName"
+        />
+      </div>
+      <div class="flex flex-col gap-1 items-center">
+        <p class="font-bold">Set</p>
+        <p
+          [ngClass]="
+            setMatching(guess) === 'exact' ? 'bg-green-600' : 'bg-yellow-700'
+          "
+          class="h-10 w-full px-2 py-1"
+        >
+          {{ guess.set }}
+          <span *ngIf="setMatching(guess) === 'higher'">Higher</span>
+          <span *ngIf="setMatching(guess) === 'lower'">Lower</span>
+        </p>
+      </div>
+      <div class="flex flex-col gap-1 items-center">
+        <p class="font-bold">TraitCount</p>
+        <p
+          [ngClass]="
+            traitCountMatching(guess) === 'exact'
+              ? 'bg-green-600'
+              : 'bg-yellow-700'
+          "
+          class="h-10 w-full px-2 py-1"
+        >
+          {{ guess.traitCount }}
+          <span *ngIf="traitCountMatching(guess) === 'higher'">Higher</span>
+          <span *ngIf="traitCountMatching(guess) === 'lower'">Lower</span>
+        </p>
+      </div>
+      <div class="flex flex-col gap-1 items-center">
+        <p class="font-bold">firstApperance</p>
+        <p
+          [ngClass]="
+            firstApperanceMatching(guess) === 'exact'
+              ? 'bg-green-600'
+              : 'bg-yellow-700'
+          "
+          class="h-10 w-full px-2 py-1"
+        >
+          {{ guess.firstApperance }}
+          <span *ngIf="firstApperanceMatching(guess) === 'higher'">Higher</span>
+          <span *ngIf="firstApperanceMatching(guess) === 'lower'">Lower</span>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="relative w-full" *ngIf="!finished">
+    <input
+      type="text"
+      class="px-4 py-2 w-full"
+      [ngModel]="query"
+      (ngModelChange)="handleChange($event)"
+      placeholder="Search for Champions"
+    />
+    <div
+      class="absolute w-full max-h-72 overflow-y-auto"
+      [style.backgroundColor]="'#1E2328'"
+    >
+      <div
+        *ngFor="let result of results$ | async"
+        class="w-full px-4 py-2 hover:cursor-pointer flex items-center gap-2"
+        (click)="guess(result.id)"
+      >
+        <img
+          [src]="
+            apiUrl +
+            '/' +
+            result.set +
+            '/champions/' +
+            result.imageName +
+            '.png'
+          "
+          alt="Logo"
+          class="h-8 w-8"
+          *ngIf="result.imageName"
+        />
+        <p>{{ result.imageName }} - Set: {{ result.set }}</p>
+      </div>
+    </div>
+  </div>
+</div>

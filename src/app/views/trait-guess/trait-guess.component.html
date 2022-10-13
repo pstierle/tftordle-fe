@@ -1,0 +1,148 @@
+<div class="flex flex-col gap-5 w-[20rem]">
+  <div
+    *ngIf="randomChampion$ | async as randomChampion"
+    class="p-5 rounded flex flex-col gap-3 items-center border-2"
+    [style.backgroundColor]="'#1E2328'"
+    [style.borderColor]="'#AE9667'"
+  >
+    <p class="font-semibold text-xl">Guess the Traits</p>
+    <p class="font-semibold flex gap-6 items-center">
+      <img
+        [src]="randomChampion.imagePath"
+        alt="Logo"
+        *ngIf="randomChampion.name"
+        class="h-20 w-20"
+      />
+      <span>{{ randomChampion.name }} - Set {{ randomChampion.set }}</span>
+    </p>
+    <p class="w-full font-semibold text-center" *ngIf="finished$ | async">
+      You Correctly guessed all Traits in
+      <span class="text-green-400">{{ guessCount$ | async }}</span> Tries!
+      Wokejj
+    </p>
+    <div
+      class="flex gap-2 items-center justify-start w-full"
+      *ngIf="!(finished$ | async)"
+    >
+      <app-question-mark-icon
+        class="text-gray-400 w-4 h-4 flex-shrink-0"
+      ></app-question-mark-icon>
+      <p class="text-sm text-gray-400" *ngIf="!displayStatClue; else statClue">
+        Champions Stat Clue in
+        <span class="text-white font-bold">{{ statClueCounter }}</span> tries.
+      </p>
+      <ng-template #statClue>
+        <div
+          class="flex flex-col gap-0.5"
+          *ngIf="statClue$ | async as statClue"
+        >
+          <p class="text-sm text-gray-400">
+            Cost: <span class="text-white font-bold">{{ statClue.cost }}</span>
+          </p>
+          <p class="text-sm text-gray-400">
+            Traitcount:
+            <span class="text-white font-bold">{{ statClue.traitCount }}</span>
+          </p>
+          <p class="text-sm text-gray-400">
+            One Trait starts with:
+            <span class="text-white font-bold"
+              >"{{ statClue.oneTraitStartsWith }}"</span
+            >
+          </p>
+        </div>
+      </ng-template>
+    </div>
+    <div
+      class="flex gap-2 items-center justify-start w-full"
+      *ngIf="!(finished$ | async)"
+    >
+      <app-question-mark-icon
+        class="text-gray-400 w-4 h-4 flex-shrink-0"
+      ></app-question-mark-icon>
+      <p
+        class="text-sm text-gray-400"
+        *ngIf="!displayTraitClue; else traitClue"
+      >
+        Champions with same Trait Clue in
+        <span class="text-white font-bold">{{ traitClueCounter }}</span> tries.
+      </p>
+      <ng-template #traitClue>
+        <div class="flex flex-wrap gap-2">
+          <p class="text-sm text-gray-400">
+            Champions with at least one same Trait:
+          </p>
+          <p
+            *ngFor="let clue of sameTraitClue$ | async; let i = index"
+            class="text-sm text-gray-400 flex"
+          >
+            <span>{{ clue }}</span>
+            <span *ngIf="((sameTraitClue$ | async)?.length ?? 0) - 1 !== i"
+              >,</span
+            >
+          </p>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+  <p *ngIf="errorMessage$ | async" class="text-center text-sm text-red-400">{{errorMessage$ | async}}</p>
+  <div
+    class="relative w-full"
+    *ngIf="!(finished$ | async)"
+    (clickOutside)="handleClickOutSide()"
+  >
+    <div class="flex gap-2 items-center">
+      <input
+        type="text"
+        class="px-4 py-2 w-full primary-input"
+        [ngModel]="query"
+        (ngModelChange)="handleChange($event)"
+        [ngClass]="{ wrong: wrongGuess }"
+        placeholder="Search for Traits"
+      />
+      <button
+        class="px-4 py-2 font-semibold secondary-input"
+        [style.borderColor]="'#AE9667'"
+        (click)="guess()"
+      >
+        Guess
+      </button>
+    </div>
+
+    <div class="absolute w-full max-h-72 overflow-y-auto">
+      <div
+        *ngFor="let result of results$ | async"
+        class="w-full px-4 py-2 hover:cursor-pointer flex items-center gap-2"
+        (click)="selectGuess(result)"
+        [style.backgroundColor]="'#1d2328'"
+      >
+        <img [src]="result.imagePath" [alt]="result.label" class="w-5 h-5" />
+        <p>
+          {{ result.label }}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex items-start gap-2 flex-wrap">
+    <div
+      *ngFor="let guess of correctGuesses$ | async"
+      [style.backgroundColor]="'#1E2328'"
+      class="px-4 py-2 border-2 border-green-600 flex justify-between items-center gap-2"
+    >
+      <img [src]="guess.imagePath" [alt]="guess.label" alt="" class="w-5 h-5" />
+      <p>{{ guess.label }}</p>
+      <app-check-icon class="w-6 h-6 text-green-600 shrink-0"></app-check-icon>
+    </div>
+  </div>
+
+  <div class="flex flex-wrap gap-2 items-start">
+    <div
+      *ngFor="let guess of wrongGuesses$ | async"
+      [style.backgroundColor]="'#1E2328'"
+      class="px-4 py-2 border-2 border-red-400 flex justify-between items-center gap-2"
+    >
+      <img [src]="guess.imagePath" [alt]="guess.label" class="w-5 h-5" />
+      <p>{{ guess.label }}</p>
+    </div>
+  </div>
+</div>
