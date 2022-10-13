@@ -82,7 +82,7 @@ export class TraitGuessService {
     if([
       ...this.correctGuesses$.getValue().map((g) => g.label),
       ...this.wrongGuesses$.getValue().map((g) => g.label),
-    ].includes(guessLabel)){
+    ].includes(guessLabel.replace(/ /g, ""))){
       this.errorMessage$.next("You already guessed this Trait!");
       return;
     }
