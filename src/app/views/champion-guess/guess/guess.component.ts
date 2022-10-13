@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import {
   ChampionGuessService, IChampionGuessChampion, Match,
-} from './../../../_services/champion-guess.service';
+} from '../../../_services/champion-guess.service';
 import { Component, Input, OnInit } from '@angular/core';
 import { environment } from 'src/environments/environment';
 
@@ -14,11 +14,11 @@ interface Attribute{
 }
 
 @Component({
-  selector: 'app-wrong-champion',
-  templateUrl: './wrong-champion.component.html',
-  styleUrls: ['./wrong-champion.component.scss'],
+  selector: 'app-guess',
+  templateUrl: './guess.component.html',
+  styleUrls: ['./guess.component.scss'],
 })
-export class WrongChampionComponent implements OnInit {
+export class GuessComponent implements OnInit {
   constructor(private championGuessService: ChampionGuessService, private http: HttpClient) {}
 
   @Input() champion!: IChampionGuessChampion;
@@ -54,6 +54,12 @@ export class WrongChampionComponent implements OnInit {
           this.attributs[i].display = true;
           this.attributs[i].matching = matching;
           this.attributs[i].value = (this.champion as any)[this.attributs[i].key];
+
+          if(i === this.attributs.length - 1){
+          if(!this.attributs.map(a => a.matching).some(a => a !== "exact")){
+              this.championGuessService.finished$.next(true);
+            }
+          }
         })
       }, (i + 1) * 1000);
     });

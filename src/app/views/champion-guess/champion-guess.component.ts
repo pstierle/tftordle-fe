@@ -18,7 +18,7 @@ export class ChampionGuessComponent implements OnInit {
   query: string = '';
   selectedChampion? : IChampionGuessChampion = undefined;
   results$ = this.championGuessService.championQueryResults$;
-  wrongGuesses$ = this.championGuessService.wrongGuesses$;
+  guesses$ = this.championGuessService.guesses$;
   finished$ = this.championGuessService.finished$;
   guessCount$ = this.championGuessService.guessCount$;
   errorMessage$ = this.championGuessService.errorMessage$;
@@ -56,7 +56,12 @@ export class ChampionGuessComponent implements OnInit {
       this.errorMessage$.next("Select a valid Champion")
       return
     }
-    this.championGuessService.checkGuess(this.selectedChampion);
+    this.results$.next([]);
+    this.guesses$.next([
+      ...this.guesses$.getValue(),
+      this.selectedChampion,
+    ]);
+    this.guessCount$.next(this.guessCount$.getValue() + 1);
     this.selectedChampion = undefined;
     this.query = "";
   }

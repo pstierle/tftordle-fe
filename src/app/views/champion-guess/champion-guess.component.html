@@ -14,7 +14,6 @@
 
   </div>
 
-
   <p *ngIf="errorMessage$ | async" class="text-center text-sm text-red-400">{{errorMessage$ | async}}</p>
 
 
@@ -36,7 +35,7 @@
       </button>
     </div>
     <div
-      class="absolute w-full max-h-72 overflow-y-auto"
+      class="absolute w-full max-h-72 overflow-y-auto z-10"
       [style.backgroundColor]="'#1E2328'"
     >
       <div
@@ -56,6 +55,6 @@
   </div>
 
   <div class="flex flex-col gap-2 items-center justify-center">
-    <app-wrong-champion  *ngFor="let guess of wrongGuesses$ | async" [champion]="guess"></app-wrong-champion>
+    <app-guess  *ngFor="let guess of guesses$ | async" [champion]="guess"></app-guess>
   </div>
 </div>

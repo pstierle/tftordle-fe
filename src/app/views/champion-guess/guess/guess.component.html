@@ -1,4 +1,4 @@
-<div class="flex gap-4 items-center">
+<div class="flex gap-4 items-center justify-center">
   <div class="flex flex-col gap-1 items-center">
     <p class="text-sm text-gray-400">{{ champion.name }}</p>
     <img
@@ -14,6 +14,7 @@
       <p class="font-semibold">{{attr.value}}</p>
       <app-up-arrow-icon class="w-6 h-6" *ngIf="attr.matching === 'higher'"></app-up-arrow-icon>
       <app-up-arrow-icon class="w-6 h-6 rotate-180"  *ngIf="attr.matching === 'lower'"></app-up-arrow-icon>
+      <app-check-icon class="w-6 h-6" *ngIf="attr.matching === 'exact'"></app-check-icon>
     </div>
   </div>
 </div>

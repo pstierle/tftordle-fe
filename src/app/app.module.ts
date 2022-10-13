@@ -1,4 +1,4 @@
-import { WrongChampionComponent } from './views/champion-guess/wrong-champion/wrong-champion.component';
+import { GuessComponent } from './views/champion-guess/guess/guess.component';
 import { ModalService } from './_services/modal.service';
 import { NavbarComponent } from './views/navabr/navbar.component';
 import { ChampionGuessComponent } from './views/champion-guess/champion-guess.component';
@@ -21,7 +21,7 @@ import { ClickOutsideDirective } from './_directives/click-outside.directive';
     ChampionGuessComponent,
     ClickOutsideDirective,
     NavbarComponent,
-    WrongChampionComponent
+    GuessComponent
   ],
   imports: [
     BrowserModule,
