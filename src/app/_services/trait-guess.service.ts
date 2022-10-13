@@ -68,13 +68,13 @@ export class TraitGuessService {
 
   getSameTraitClue() {
     this.http
-      .get<string[]>(environment.apiUrl + '/same-trait-clue/')
+      .get<string[]>(environment.apiUrl + '/trait-guess-same-trait-clue/')
       .subscribe((clues) => this.sameTraitClue$.next(clues));
   }
 
   getStatClue() {
     this.http
-      .get<IStatClue>(environment.apiUrl + '/stat-clue/')
+      .get<IStatClue>(environment.apiUrl + '/trait-guess-stat-clue/')
       .subscribe((statClue) => this.statClue$.next(statClue));
   }
 
@@ -93,7 +93,7 @@ export class TraitGuessService {
     }
 
     this.http
-      .get<IGuessResponse>(environment.apiUrl + '/check-guess/' + guessLabel)
+      .get<IGuessResponse>(environment.apiUrl + '/check-trait-guess/' + guessLabel)
       .subscribe((guessResponse) => {
         if(!guessResponse.guess){
           this.errorMessage$.next("Select a valid Trait!");

@@ -1,4 +1,3 @@
-import { environment } from 'src/environments/environment';
 import { debounceTime, Subject, filter } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
 import {
@@ -33,8 +32,6 @@ export class TraitGuessComponent implements OnInit {
 
   statClueCounter = 3;
   displayStatClue = false;
-
-  apiUrl = environment.apiUrl;
 
   ngOnInit(): void {
     this.traitGuessService.getTraitGuessChampion();

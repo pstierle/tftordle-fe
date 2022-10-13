@@ -4,7 +4,7 @@
     class="font-bold text-3xl logo mt-20"
     [style.backgroundColor]="'#1E2328'"
     [style.borderColor]="'#AE9667'"
-    *ngIf="!selectedGameMode"
+    *ngIf="!selectedGameModeId"
   >
     <p>Tftordle</p>
     <div
@@ -15,24 +15,18 @@
       <img src="../assets/logo.png" />
     </div>
   </div>
-  <app-trait-guess *ngIf="selectedGameMode === 'Trait'"></app-trait-guess>
+  <app-trait-guess *ngIf="selectedGameModeId === 0"></app-trait-guess>
   <app-champion-guess
-    *ngIf="selectedGameMode === 'Champion'"
+    *ngIf="selectedGameModeId === 1"
   ></app-champion-guess>
 
-  <div class="flex flex-col gap-6" *ngIf="!selectedGameMode; else backBtn">
+  <div class="flex flex-col gap-6" *ngIf="selectedGameModeId === undefined; else backBtn">
     <button
-      class="pr-8 pl-3 py-3 hover:scale-105 transition-all flex flex-col justify-start gap-3 primary-input"
+      class="py-3 px-6 hover:scale-105 transition-all flex flex-col justify-start gap-3 primary-input"
       *ngFor="let gameMode of gameModes"
-      (click)="selectGameMode(gameMode.label)"
+      (click)="selectGameMode(gameMode.id)"
     >
-      <p
-        class="text-xl font-semibold border-b-2 pr-3 pl-1"
-        [style.borderColor]="'#AE9667'"
-      >
-        {{ gameMode.label }}
-      </p>
-      <p class="text-sm">{{ gameMode.description }}</p>
+      <p class="font font-semibold">{{ gameMode.description }}</p>
     </button>
   </div>
 

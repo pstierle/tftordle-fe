@@ -17,25 +17,22 @@ export class AppComponent implements OnInit {
 
   gameModes = [
     {
-      label: 'Trait',
-      description: "Guess the Trait's of a Champion",
+      id: 0,
+      description: "Guess todays Trait's",
     },
     {
-      label: 'Champion',
-      description: 'Guess a Champion',
-    },
-    {
-      label: 'Trait Icon',
-      description: "Guess a Trait's Name by Icon",
-    },
+      id: 1,
+      description: "Guess todays Champion",
+    }
   ];
-  selectedGameMode?: string;
 
-  selectGameMode(mode: string) {
-    this.selectedGameMode = mode;
+  selectedGameModeId?: number = undefined;
+
+  selectGameMode(id: number) {
+    this.selectedGameModeId = id;
   }
 
   reset() {
-    this.selectedGameMode = undefined;
+    this.selectedGameModeId = undefined;
   }
 }

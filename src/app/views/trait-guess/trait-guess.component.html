@@ -5,7 +5,7 @@
     [style.backgroundColor]="'#1E2328'"
     [style.borderColor]="'#AE9667'"
   >
-    <p class="font-semibold text-xl">Guess the Traits</p>
+    <p class="font-semibold text-xl">Guess the Trait's</p>
     <p class="font-semibold flex gap-6 items-center">
       <img
         [src]="randomChampion.imagePath"
@@ -16,7 +16,7 @@
       <span>{{ randomChampion.name }} - Set {{ randomChampion.set }}</span>
     </p>
     <p class="w-full font-semibold text-center" *ngIf="finished$ | async">
-      You Correctly guessed all Traits in
+      You Correctly guessed all Trait's in
       <span class="text-green-400">{{ guessCount$ | async }}</span> Tries!
       Wokejj
     </p>

@@ -5,10 +5,18 @@ module.exports = {
   ],
   theme: {
     extend: {
-      colors: {
-        primary: '#5c6ac4',
-        secondary: '#ecc94b',
-      }
+      // that is animation class
+      animation: {
+        fade: 'fadeIn 2s ease-in',
+      },
+
+      // that is actual animation
+      keyframes: theme => ({
+        fadeIn: {
+          '0%': { opacity: '0%' },
+          '100%': { opacity: '100%' },
+        },
+      }),
     },
   },
   plugins: [],
