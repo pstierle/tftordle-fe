@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { environment } from 'src/environments/environment';
-import { BehaviorSubject } from 'rxjs';
+import { Injectable } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
+import { environment } from "src/environments/environment";
+import { BehaviorSubject } from "rxjs";
 
 export interface ITraitGuessChampion {
   name: string;
@@ -27,7 +27,7 @@ export interface ITrait {
 }
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class TraitGuessService {
   randomChampion$ = new BehaviorSubject<ITraitGuessChampion | undefined>(
@@ -44,15 +44,17 @@ export class TraitGuessService {
 
   constructor(private http: HttpClient) {}
 
+  url = environment.apiUrl + "/trait-guess";
+
   getTraitGuessChampion() {
     this.http
-      .get<ITraitGuessChampion>(environment.apiUrl + '/trait-guess-champion')
+      .get<ITraitGuessChampion>(this.url + "/champion")
       .subscribe((champion) => this.randomChampion$.next(champion));
   }
 
   queryTraits(query: string) {
     this.http
-      .get<ITrait[]>(environment.apiUrl + '/query-traits/' + query)
+      .get<ITrait[]>(this.url + "/query-traits/" + query)
       .subscribe((results) =>
         this.traitQueryResults$.next(
           results.filter(
@@ -68,34 +70,36 @@ export class TraitGuessService {
 
   getSameTraitClue() {
     this.http
-      .get<string[]>(environment.apiUrl + '/trait-guess-same-trait-clue/')
+      .get<string[]>(this.url + "/same-trait-clue")
       .subscribe((clues) => this.sameTraitClue$.next(clues));
   }
 
   getStatClue() {
     this.http
-      .get<IStatClue>(environment.apiUrl + '/trait-guess-stat-clue/')
+      .get<IStatClue>(this.url + "/stat-clue")
       .subscribe((statClue) => this.statClue$.next(statClue));
   }
 
   checkGuess(guessLabel: string) {
-    if([
-      ...this.correctGuesses$.getValue().map((g) => g.label),
-      ...this.wrongGuesses$.getValue().map((g) => g.label),
-    ].includes(guessLabel.replace(/ /g, ""))){
+    if (
+      [
+        ...this.correctGuesses$.getValue().map((g) => g.label),
+        ...this.wrongGuesses$.getValue().map((g) => g.label),
+      ].includes(guessLabel.replace(/ /g, ""))
+    ) {
       this.errorMessage$.next("You already guessed this Trait!");
       return;
     }
 
-    if(!guessLabel){
+    if (!guessLabel) {
       this.errorMessage$.next("Select a valid Trait!");
       return;
     }
 
     this.http
-      .get<IGuessResponse>(environment.apiUrl + '/check-trait-guess/' + guessLabel)
+      .get<IGuessResponse>(this.url + "/check-guess/" + guessLabel)
       .subscribe((guessResponse) => {
-        if(!guessResponse.guess){
+        if (!guessResponse.guess) {
           this.errorMessage$.next("Select a valid Trait!");
           return;
         }

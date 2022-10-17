@@ -4,7 +4,7 @@
     class="font-bold text-3xl logo mt-20"
     [style.backgroundColor]="'#1E2328'"
     [style.borderColor]="'#AE9667'"
-    *ngIf="!selectedGameModeId"
+    *ngIf="selectedGameModeId === undefined"
   >
     <p>Tftordle</p>
     <div
@@ -16,11 +16,12 @@
     </div>
   </div>
   <app-trait-guess *ngIf="selectedGameModeId === 0"></app-trait-guess>
-  <app-champion-guess
-    *ngIf="selectedGameModeId === 1"
-  ></app-champion-guess>
+  <app-champion-guess *ngIf="selectedGameModeId === 1"></app-champion-guess>
 
-  <div class="flex flex-col gap-6" *ngIf="selectedGameModeId === undefined; else backBtn">
+  <div
+    class="flex flex-col gap-6"
+    *ngIf="selectedGameModeId === undefined; else backBtn"
+  >
     <button
       class="py-3 px-6 hover:scale-105 transition-all flex flex-col justify-start gap-3 primary-input"
       *ngFor="let gameMode of gameModes"

@@ -9,7 +9,6 @@
     <p class="font-semibold flex gap-6 items-center">
       <img
         [src]="randomChampion.imagePath"
-        alt="Logo"
         *ngIf="randomChampion.name"
         class="h-20 w-20"
       />
@@ -84,7 +83,9 @@
       </ng-template>
     </div>
   </div>
-  <p *ngIf="errorMessage$ | async" class="text-center text-sm text-red-400">{{errorMessage$ | async}}</p>
+  <p *ngIf="errorMessage$ | async" class="text-center text-sm text-red-400">
+    {{ errorMessage$ | async }}
+  </p>
   <div
     class="relative w-full"
     *ngIf="!(finished$ | async)"
@@ -115,7 +116,7 @@
         (click)="selectGuess(result)"
         [style.backgroundColor]="'#1d2328'"
       >
-        <img [src]="result.imagePath" [alt]="result.label" class="w-5 h-5" />
+        <img [src]="result.imagePath" class="w-5 h-5" />
         <p>
           {{ result.label }}
         </p>
@@ -129,7 +130,7 @@
       [style.backgroundColor]="'#1E2328'"
       class="px-4 py-2 border-2 border-green-600 flex justify-between items-center gap-2"
     >
-      <img [src]="guess.imagePath" [alt]="guess.label" alt="" class="w-5 h-5" />
+      <img [src]="guess.imagePath" class="w-5 h-5" />
       <p>{{ guess.label }}</p>
       <app-check-icon class="w-6 h-6 text-green-600 shrink-0"></app-check-icon>
     </div>
@@ -141,7 +142,7 @@
       [style.backgroundColor]="'#1E2328'"
       class="px-4 py-2 border-2 border-red-400 flex justify-between items-center gap-2"
     >
-      <img [src]="guess.imagePath" [alt]="guess.label" class="w-5 h-5" />
+      <img [src]="guess.imagePath" class="w-5 h-5" />
       <p>{{ guess.label }}</p>
     </div>
   </div>

@@ -1,28 +1,28 @@
-import { ITrait } from './trait-guess.service';
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { environment } from 'src/environments/environment';
-import { BehaviorSubject } from 'rxjs';
+import { ITrait } from "./trait-guess.service";
+import { Injectable } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
+import { environment } from "src/environments/environment";
+import { BehaviorSubject } from "rxjs";
 
 export interface IChampionGuessChampion {
   id: string;
   name: string;
   set: number;
-  traitCount: number;
+  traitCount?: number;
   imagePath?: string;
   cost: number;
-  traits: ITrait[];
+  traits?: ITrait[];
 }
 
-export interface IChampionGuessResponse{
+export interface IChampionGuessResponse {
   correct: boolean;
   invalidChampion?: boolean;
 }
 
-export type Match = 'exact' | 'higher' | 'lower' | "wrong" | "some";
+export type Match = "exact" | "higher" | "lower" | "wrong" | "some";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class ChampionGuessService {
   guesses$ = new BehaviorSubject<IChampionGuessChampion[]>([]);
@@ -33,15 +33,21 @@ export class ChampionGuessService {
 
   constructor(private http: HttpClient) {}
 
+  url = environment.apiUrl + "/champion-guess";
+
   queryChampions(query: string) {
     this.http
-      .get<IChampionGuessChampion[]>(environment.apiUrl + '/query-champions/' + query)
-      .subscribe((results) =>
+      .get<IChampionGuessChampion[]>(this.url + "/query-champions/" + query)
+      .subscribe((results) => {
         this.championQueryResults$.next(
           results.filter(
-            (result) => !this.guesses$.getValue().map(r => r.id).includes(result.id)
+            (result) =>
+              !this.guesses$
+                .getValue()
+                .map((r) => r.id)
+                .includes(result.id)
           )
-        )
-      );
+        );
+      });
   }
 }
