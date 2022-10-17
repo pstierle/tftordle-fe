@@ -41,7 +41,7 @@ export class ChampionGuessComponent implements OnInit {
   }
 
   selectGuess(result: IChampionGuessChampion) {
-    this.query = result.name + "-" + result.set;
+    this.query = result.name + " - Set: " + result.set;
     this.results$.next([]);
     this.query$.next('');
     this.selectedChampion = result;
