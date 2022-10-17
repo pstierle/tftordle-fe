@@ -24,33 +24,39 @@
         class="px-4 py-2 w-full primary-input"
         [ngModel]="query"
         (ngModelChange)="handleChange($event)"
+        (focus)="handleFocus()"
         placeholder="Search for Champions"
       />
       <button
-        class="px-4 py-2 font-semibold secondary-input"
+        class="px-4 py-2 font-semibold secondary-input disabled:opacity-50"
         [style.borderColor]="'#AE9667'"
         (click)="guess()"
+        [disabled]="selectedChampion === undefined"
       >
         Guess
       </button>
     </div>
     <div
-      class="absolute w-full max-h-72 overflow-y-auto z-10"
+      class="absolute w-full overflow-y-auto z-10"
       [style.backgroundColor]="'#1E2328'"
+      *ngIf="showResults"
     >
-        <div
-        *ngFor="let result of results$ | async"
-        class="w-full px-4 py-2 hover:cursor-pointer flex items-center gap-2"
-        (click)="selectGuess(result)"
-      >
-        <img
-          [src]="result.imagePath"
-          alt="Logo"
-          class="h-8 w-8"
-          *ngIf="result.imagePath"
-        />
-        <p>{{ result.name }} - Set: {{ result.set }}</p>
-      </div>
+        <p class="w-full text-center font-semibold p-2" *ngIf="(results$ | async)?.length === 0; else results">No results found</p>
+        <ng-template #results>
+          <div
+          *ngFor="let result of results$ | async"
+          class="w-full px-4 py-2 hover:cursor-pointer flex items-center gap-2"
+          (click)="selectGuess(result)"
+        >
+          <img
+            [src]="result.imagePath"
+            alt="Logo"
+            class="h-8 w-8"
+            *ngIf="result.imagePath"
+          />
+          <p>{{ result.name }} - Set: {{ result.set }}</p>
+        </div>
+        </ng-template>
     </div>
   </div>
 

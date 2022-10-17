@@ -18,7 +18,7 @@ export interface IStatClue {
 export interface IGuessResponse {
   correct: boolean;
   needed?: number;
-  guess?: ITrait;
+  guess: ITrait;
 }
 
 export interface ITrait {
@@ -80,30 +80,10 @@ export class TraitGuessService {
       .subscribe((statClue) => this.statClue$.next(statClue));
   }
 
-  checkGuess(guessLabel: string) {
-    if (
-      [
-        ...this.correctGuesses$.getValue().map((g) => g.label),
-        ...this.wrongGuesses$.getValue().map((g) => g.label),
-      ].includes(guessLabel.replace(/ /g, ""))
-    ) {
-      this.errorMessage$.next("You already guessed this Trait!");
-      return;
-    }
-
-    if (!guessLabel) {
-      this.errorMessage$.next("Select a valid Trait!");
-      return;
-    }
-
+  checkGuess(trait: ITrait) {
     this.http
-      .get<IGuessResponse>(this.url + "/check-guess/" + guessLabel)
+      .get<IGuessResponse>(this.url + "/check-guess/" + trait.label)
       .subscribe((guessResponse) => {
-        if (!guessResponse.guess) {
-          this.errorMessage$.next("Select a valid Trait!");
-          return;
-        }
-
         this.guessCount$.next(this.guessCount$.getValue() + 1);
 
         if (guessResponse.correct) {
@@ -121,7 +101,15 @@ export class TraitGuessService {
           ]);
         }
 
-        this.traitQueryResults$.next([]);
+        this.traitQueryResults$.next(
+          this.traitQueryResults$.getValue().filter(
+            (result) =>
+              ![
+                ...this.correctGuesses$.getValue().map((g) => g.label),
+                ...this.wrongGuesses$.getValue().map((g) => g.label),
+              ].includes(result.label)
+          )
+        )
       });
   }
 }

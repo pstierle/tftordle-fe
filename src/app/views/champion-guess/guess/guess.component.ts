@@ -53,8 +53,6 @@ export class GuessComponent implements OnInit {
   ];
 
   ngOnInit(): void {
-    console.log(this.champion);
-
     this.attributs.forEach((attribute, i) => {
       setTimeout(() => {
         this.http

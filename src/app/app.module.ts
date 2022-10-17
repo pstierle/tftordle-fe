@@ -4,6 +4,7 @@ import { NavbarComponent } from './views/navabr/navbar.component';
 import { ChampionGuessComponent } from './views/champion-guess/champion-guess.component';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { OverlayModule } from '@angular/cdk/overlay';
 
@@ -25,6 +26,7 @@ import { ClickOutsideDirective } from './_directives/click-outside.directive';
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     HttpClientModule,
     CommonModule,
     FormsModule,

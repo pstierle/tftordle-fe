@@ -23,15 +23,18 @@ export class TraitGuessComponent implements OnInit {
   guessCount$ = this.traitGuessService.guessCount$;
   errorMessage$ = this.traitGuessService.errorMessage$;
 
+  selectedTrait?: ITrait;
+
   query$ = new Subject<string>();
   query = '';
-  wrongGuess = false;
 
   traitClueCounter = 6;
   displayTraitClue = false;
 
   statClueCounter = 3;
   displayStatClue = false;
+
+  showResults = false;
 
   ngOnInit(): void {
     this.traitGuessService.getTraitGuessChampion();
@@ -42,11 +45,7 @@ export class TraitGuessComponent implements OnInit {
       )
       .subscribe((query) => this.traitGuessService.queryTraits(query));
 
-    this.wrongGuesses$.subscribe((guesses) => {
-      if (guesses.length > 0) {
-        this.wrongGuess = false;
-        this.wrongGuess = true;
-      }
+    this.wrongGuesses$.subscribe(() => {
       if (!this.displayTraitClue) {
         this.traitClueCounter -= 1;
         if (this.traitClueCounter === 0) {
@@ -65,28 +64,32 @@ export class TraitGuessComponent implements OnInit {
   }
 
   handleChange(query: string) {
-    this.wrongGuess = false;
     this.query$.next(query);
     this.query = query;
     this.errorMessage$.next(undefined);
-
-    if (query === '') {
-      this.results$.next([]);
-    }
+    this.selectedTrait = undefined;
   }
 
   guess() {
-    this.traitGuessService.checkGuess(this.query);
-    this.results$.next([]);
+    if(this.selectedTrait){
+      this.traitGuessService.checkGuess(this.selectedTrait);
+      this.showResults = false;
+      this.selectedTrait = undefined;
+      this.query = "";
+    }
+  }
+
+  handleFocus(){
+    this.showResults = true;
   }
 
   selectGuess(result: ITrait) {
     this.query = result.label;
-    this.results$.next([]);
-    this.query$.next('');
+    this.selectedTrait = result;
+    this.showResults = false;
   }
 
   handleClickOutSide() {
-    this.results$.next([]);
+    this.showResults = false;
   }
 }

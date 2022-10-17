@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { ResetGuessService } from 'src/app/_services/reset-guess.service';
 
 @Component({
   selector: 'app-reset-modal',

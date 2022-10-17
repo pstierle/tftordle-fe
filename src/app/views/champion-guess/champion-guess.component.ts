@@ -22,6 +22,7 @@ export class ChampionGuessComponent implements OnInit {
   finished$ = this.championGuessService.finished$;
   guessCount$ = this.championGuessService.guessCount$;
   errorMessage$ = this.championGuessService.errorMessage$;
+  showResults = false;
 
   ngOnInit(): void {
     this.query$
@@ -35,34 +36,41 @@ export class ChampionGuessComponent implements OnInit {
   handleChange(query: string) {
     this.query$.next(query);
     this.selectedChampion = undefined;
-    if (query === '') {
-      this.results$.next([]);
-    }
   }
 
   selectGuess(result: IChampionGuessChampion) {
     this.query = result.name + " - Set: " + result.set;
-    this.results$.next([]);
-    this.query$.next('');
     this.selectedChampion = result;
+    this.showResults = false;
   }
 
   handleClickOutSide() {
-    this.results$.next([]);
+    this.showResults = false;
+  }
+
+  handleFocus(){
+    this.showResults = true;
   }
 
   guess(){
-    if(!this.selectedChampion){
-      this.errorMessage$.next("Select a valid Champion")
-      return
-    }
-    this.results$.next([]);
-    this.guesses$.next([
-      ...this.guesses$.getValue(),
-      this.selectedChampion,
-    ]);
-    this.guessCount$.next(this.guessCount$.getValue() + 1);
-    this.selectedChampion = undefined;
-    this.query = "";
+    if(this.selectedChampion){
+      this.showResults = false;
+      this.guesses$.next([
+        ...this.guesses$.getValue(),
+        this.selectedChampion,
+      ]);
+      this.results$.next(
+        this.results$.getValue().filter(
+          (result) =>
+            !this.guesses$
+              .getValue()
+              .map((r) => r.id)
+              .includes(result.id)
+        )
+      );
+      this.guessCount$.next(this.guessCount$.getValue() + 1);
+      this.selectedChampion = undefined;
+      this.query = "";
+      }
   }
 }
