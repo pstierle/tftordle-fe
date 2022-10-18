@@ -1,14 +1,14 @@
-import { debounceTime, Subject, filter } from 'rxjs';
-import { Component, OnInit } from '@angular/core';
+import { debounceTime, Subject, filter } from "rxjs";
+import { Component, OnInit } from "@angular/core";
 import {
   ITrait,
   TraitGuessService,
-} from 'src/app/_services/trait-guess.service';
+} from "src/app/_services/trait-guess.service";
 
 @Component({
-  selector: 'app-trait-guess',
-  templateUrl: './trait-guess.component.html',
-  styleUrls: ['trait-guess.component.scss'],
+  selector: "app-trait-guess",
+  templateUrl: "./trait-guess.component.html",
+  styleUrls: ["trait-guess.component.scss"],
 })
 export class TraitGuessComponent implements OnInit {
   constructor(private traitGuessService: TraitGuessService) {}
@@ -26,7 +26,7 @@ export class TraitGuessComponent implements OnInit {
   selectedTrait?: ITrait;
 
   query$ = new Subject<string>();
-  query = '';
+  query = "";
 
   traitClueCounter = 6;
   displayTraitClue = false;
@@ -71,7 +71,7 @@ export class TraitGuessComponent implements OnInit {
   }
 
   guess() {
-    if(this.selectedTrait){
+    if (this.selectedTrait) {
       this.traitGuessService.checkGuess(this.selectedTrait);
       this.showResults = false;
       this.selectedTrait = undefined;
@@ -79,7 +79,7 @@ export class TraitGuessComponent implements OnInit {
     }
   }
 
-  handleFocus(){
+  handleFocus() {
     this.showResults = true;
   }
 

@@ -53,36 +53,40 @@ export class GuessComponent implements OnInit {
   ];
 
   ngOnInit(): void {
-    this.attributs.forEach((attribute, i) => {
-      setTimeout(() => {
-        this.http
-          .get<{
-            matchState: Match;
-            userGuessValue: any;
-          }>(
-            environment.apiUrl +
-              "/champion-guess/check-guess-attr/" +
-              this.champion.id +
-              "/" +
-              attribute.key
-          )
-          .subscribe((matching) => {
-            this.attributs[i].display = true;
-            this.attributs[i].matching = matching.matchState;
-            this.attributs[i].value = matching.userGuessValue;
+    this.http
+      .get<
+        {
+          attrLabel: string;
+          matchState: Match;
+          userGuessValue: any;
+        }[]
+      >(
+        environment.apiUrl +
+          "/champion-guess/check-guess-attr/" +
+          this.champion.id
+      )
+      .subscribe((results) => {
+        this.attributs.forEach((attribute, i) => {
+          setTimeout(() => {
+            const result = results.find((r) => r.attrLabel === attribute.key);
+            if (result) {
+              this.attributs[i].display = true;
+              this.attributs[i].matching = result.matchState;
+              this.attributs[i].value = result.userGuessValue;
 
-            if (i === this.attributs.length - 1) {
-              if (
-                !this.attributs
-                  .map((a) => a.matching)
-                  .some((a) => a !== "exact")
-              ) {
-                this.championGuessService.finished$.next(true);
+              if (i === this.attributs.length - 1) {
+                if (
+                  !this.attributs
+                    .map((a) => a.matching)
+                    .some((a) => a !== "exact")
+                ) {
+                  this.championGuessService.finished$.next(true);
+                }
               }
             }
-          });
-      }, (i + 1) * 1000);
-    });
+          }, (i + 1) * 800);
+        });
+      });
   }
 
   get displayAttributes() {
