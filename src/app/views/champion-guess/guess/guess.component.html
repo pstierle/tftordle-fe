@@ -1,4 +1,4 @@
-<div class="flex gap-4 items-center justify-center">
+<div class="flex gap-4 items-center justify-start w-full">
   <div class="flex flex-col gap-1 items-center">
     <p class="text-sm text-gray-400">{{ champion.name }}</p>
     <img
@@ -8,14 +8,34 @@
       *ngIf="champion.imagePath"
     />
   </div>
-  <div class="flex flex-col gap-1 items-center fade-in" *ngFor="let attr of displayAttributes">
-    <p class="text-sm text-gray-400">{{attr.label}}</p>
-    <div class="h-10 flex items-center justify-center px-4 rounded-sm gap-2" [ngClass]="attr.matching === 'exact' ? 'bg-green-400' : attr.matching === 'wrong' ? 'bg-red-400' : 'bg-yellow-500'">
-      <p class="font-semibold">{{attr.value}}</p>
-      <app-up-arrow-icon class="w-6 h-6" *ngIf="attr.matching === 'higher'"></app-up-arrow-icon>
-      <app-up-arrow-icon class="w-6 h-6 rotate-180"  *ngIf="attr.matching === 'lower'"></app-up-arrow-icon>
-      <app-check-icon class="w-6 h-6" *ngIf="attr.matching === 'exact'"></app-check-icon>
+  <div
+    class="flex flex-col gap-1 items-center fade-in"
+    *ngFor="let attr of displayAttributes"
+  >
+    <p class="text-sm text-gray-400">{{ attr.label }}</p>
+    <div
+      class="h-10 flex items-center justify-center px-4 rounded-sm gap-2"
+      [ngClass]="
+        attr.matching === 'exact'
+          ? 'bg-green-400'
+          : attr.matching === 'wrong'
+          ? 'bg-red-400'
+          : 'bg-yellow-500'
+      "
+    >
+      <p class="font-semibold">{{ attr.value }}</p>
+      <app-up-arrow-icon
+        class="w-6 h-6"
+        *ngIf="attr.matching === 'higher'"
+      ></app-up-arrow-icon>
+      <app-up-arrow-icon
+        class="w-6 h-6 rotate-180"
+        *ngIf="attr.matching === 'lower'"
+      ></app-up-arrow-icon>
+      <app-check-icon
+        class="w-6 h-6"
+        *ngIf="attr.matching === 'exact'"
+      ></app-check-icon>
     </div>
   </div>
 </div>
-

@@ -71,6 +71,7 @@
 
   <div class="flex flex-col gap-2 items-center justify-center">
     <app-guess
+      class="w-full"
       *ngFor="let guess of guesses$ | async"
       [champion]="guess"
     ></app-guess>
