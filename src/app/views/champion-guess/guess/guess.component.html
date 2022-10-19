@@ -1,6 +1,6 @@
 <div class="flex gap-4 items-center justify-start w-full">
   <div class="flex flex-col gap-1 items-center">
-    <p class="text-sm text-gray-400">{{ champion.name }}</p>
+    <p class="text-sm font-semibold">{{ champion.name }}</p>
     <img
       [src]="champion.imagePath"
       alt="Logo"
@@ -12,14 +12,14 @@
     class="flex flex-col gap-1 items-center fade-in"
     *ngFor="let attr of displayAttributes"
   >
-    <p class="text-sm text-gray-400">{{ attr.label }}</p>
+    <p class="text-sm font-semibold">{{ attr.label }}</p>
     <div
       class="h-10 flex items-center justify-center px-4 rounded-sm gap-2"
       [ngClass]="
         attr.matching === 'exact'
-          ? 'bg-green-400'
+          ? 'bg-green-500'
           : attr.matching === 'wrong'
-          ? 'bg-red-400'
+          ? 'bg-red-500'
           : 'bg-yellow-500'
       "
     >

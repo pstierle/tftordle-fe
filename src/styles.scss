@@ -2,9 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: font;
+  src: url("./assets/Friz\ Quadrata\ Regular.ttf");
+}
+
 * {
   color: white;
-  font-family: sans-serif;
+  font-family: font;
 }
 
 body {
@@ -13,23 +18,20 @@ body {
 
   background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), no-repeat,
     url("./assets/background.jpg");
-
 }
 
 .primary-input {
   background-color: #1d2328;
-  border: 5px solid;
+  border: 3px solid;
   border-image-slice: 1;
-  border-width: 3px;
   border-image-source: linear-gradient(to left, #0a6f82, #11b5b2);
   outline: none;
 }
 
 .secondary-input {
   background-color: #1d2328;
-  border: 5px solid;
+  border: 3px solid;
   border-image-slice: 1;
-  border-width: 3px;
   border-image-source: linear-gradient(to left, #eecc8a, #968259);
   outline: none;
 }

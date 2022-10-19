@@ -139,7 +139,7 @@
     <div
       *ngFor="let guess of correctGuesses$ | async"
       [style.backgroundColor]="'#1E2328'"
-      class="px-4 py-2 border-2 border-green-600 flex justify-between items-center gap-2"
+      class="px-4 py-2 border-[3px] border-green-600 flex justify-between items-center gap-2"
     >
       <img [src]="guess.imagePath" class="w-5 h-5" />
       <p>{{ guess.label }}</p>
@@ -151,7 +151,7 @@
     <div
       *ngFor="let guess of wrongGuesses$ | async"
       [style.backgroundColor]="'#1E2328'"
-      class="px-4 py-2 border-2 border-red-400 flex justify-between items-center gap-2"
+      class="px-4 py-2 border-[3px] border-red-500 flex justify-between items-center gap-2"
     >
       <img [src]="guess.imagePath" class="w-5 h-5" />
       <p>{{ guess.label }}</p>
