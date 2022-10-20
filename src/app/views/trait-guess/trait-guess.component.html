@@ -32,9 +32,15 @@
           class="flex flex-col gap-0.5"
           *ngIf="statClue$ | async as statClue"
         >
-          <p class="text-sm text-gray-400">
-            Cost: <span class="text-white font-bold">{{ statClue.cost }}</span>
-          </p>
+          <div class="flex gap-1 items-center">
+            <p class="text-sm text-gray-400">Cost:</p>
+            <div class="flex gap-1 items-center">
+              <span class="text-white font-bold text-sm">{{
+                statClue.cost
+              }}</span>
+              <app-gold-icon class="w-4 h-4"></app-gold-icon>
+            </div>
+          </div>
           <p class="text-sm text-gray-400">
             Traitcount:
             <span class="text-white font-bold">{{ statClue.traitCount }}</span>

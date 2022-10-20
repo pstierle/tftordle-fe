@@ -14,16 +14,16 @@
   >
     <p class="text-sm font-semibold">{{ attr.label }}</p>
     <div
-      class="h-10 flex items-center justify-center px-4 rounded-sm gap-2"
+      class="h-10 flex items-center justify-center px-4 gap-2"
       [ngClass]="
         attr.matching === 'exact'
-          ? 'bg-green-500'
+          ? 'green-border'
           : attr.matching === 'wrong'
-          ? 'bg-red-500'
-          : 'bg-yellow-500'
+          ? 'red-border'
+          : 'yellow-border'
       "
     >
-      <p class="font-semibold">{{ attr.value }}</p>
+      <p>{{ attr.value }}</p>
       <app-up-arrow-icon
         class="w-6 h-6"
         *ngIf="attr.matching === 'higher'"
@@ -32,10 +32,10 @@
         class="w-6 h-6 rotate-180"
         *ngIf="attr.matching === 'lower'"
       ></app-up-arrow-icon>
-      <app-check-icon
-        class="w-6 h-6"
-        *ngIf="attr.matching === 'exact'"
-      ></app-check-icon>
+      <app-gold-icon
+        class="w-4 h-4"
+        *ngIf="attr.key === 'cost'"
+      ></app-gold-icon>
     </div>
   </div>
 </div>
