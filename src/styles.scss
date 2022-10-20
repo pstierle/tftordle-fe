@@ -36,6 +36,22 @@ body {
   outline: none;
 }
 
+.red-border {
+  background-color: #1d2328;
+  border: 3px solid;
+  border-image-slice: 1;
+  border-image-source: linear-gradient(to left, #942c2c, #ef4444);
+  outline: none;
+}
+
+.green-border {
+  background-color: #1d2328;
+  border: 3px solid;
+  border-image-slice: 1;
+  border-image-source: linear-gradient(to left, #0f7032, #16a34a);
+  outline: none;
+}
+
 /* width */
 ::-webkit-scrollbar {
   width: 10px;

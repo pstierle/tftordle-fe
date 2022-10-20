@@ -1,9 +1,7 @@
 <div class="flex flex-col gap-5 w-[20rem]">
   <div
     *ngIf="randomChampion$ | async as randomChampion"
-    class="p-5 rounded flex flex-col gap-3 items-center border-2"
-    [style.backgroundColor]="'#1E2328'"
-    [style.borderColor]="'#AE9667'"
+    class="p-5 rounded flex flex-col gap-3 items-center primary-input"
   >
     <p class="font-semibold text-xl">Guess the Trait's</p>
     <p class="font-semibold flex gap-6 items-center">
@@ -139,11 +137,10 @@
     <div
       *ngFor="let guess of correctGuesses$ | async"
       [style.backgroundColor]="'#1E2328'"
-      class="px-4 py-2 border-[3px] border-green-600 flex justify-between items-center gap-2"
+      class="px-4 py-2 green-border flex justify-between items-center gap-2"
     >
       <img [src]="guess.imagePath" class="w-5 h-5" />
       <p>{{ guess.label }}</p>
-      <app-check-icon class="w-6 h-6 text-green-600 shrink-0"></app-check-icon>
     </div>
   </div>
 
@@ -151,7 +148,7 @@
     <div
       *ngFor="let guess of wrongGuesses$ | async"
       [style.backgroundColor]="'#1E2328'"
-      class="px-4 py-2 border-[3px] border-red-500 flex justify-between items-center gap-2"
+      class="px-4 py-2 red-border flex justify-between items-center gap-2"
     >
       <img [src]="guess.imagePath" class="w-5 h-5" />
       <p>{{ guess.label }}</p>
