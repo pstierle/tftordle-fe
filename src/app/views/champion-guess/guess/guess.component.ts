@@ -44,6 +44,13 @@ export class GuessComponent implements OnInit {
       value: undefined,
     },
     {
+      label: "Range",
+      key: "range",
+      display: false,
+      matching: undefined,
+      value: undefined,
+    },
+    {
       label: "Traits",
       key: "traits",
       display: false,

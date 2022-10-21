@@ -11,6 +11,7 @@ export interface IChampionGuessChampion {
   traitCount?: number;
   imagePath?: string;
   cost: number;
+  range: number;
   traits?: ITrait[];
 }
 

@@ -5,7 +5,8 @@
     </p>
 
     <p class="w-full font-semibold text-center" *ngIf="finished$ | async">
-      You Correctly guessed the Champion in {{ guessCount$ | async }} tries!
+      You Correctly guessed the Champion in
+      <span class="text-green-400">{{ guessCount$ | async }}</span> tries!
     </p>
   </div>
 
