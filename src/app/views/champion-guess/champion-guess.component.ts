@@ -118,7 +118,7 @@ export class ChampionGuessComponent implements OnInit {
 
   checkFinished(results: IChampionGuessResult[]) {
     const mapped = results.map((r) => r.matchState);
-    const finished = mapped.every((v) => v === mapped[0]);
+    const finished = mapped.every((v) => v === "exact");
     this.finished$.next(finished);
   }
 }
