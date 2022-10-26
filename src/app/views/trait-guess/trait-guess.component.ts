@@ -4,11 +4,14 @@ import {
   ITrait,
   TraitGuessService,
 } from "src/app/_services/trait-guess.service";
+import { trigger } from "@angular/animations";
+import { inOut } from "src/app/_animations/animations";
 
 @Component({
   selector: "app-trait-guess",
   templateUrl: "./trait-guess.component.html",
   styleUrls: ["trait-guess.component.scss"],
+  animations: [trigger("inOutAnimation", inOut)],
 })
 export class TraitGuessComponent implements OnInit {
   constructor(private traitGuessService: TraitGuessService) {}

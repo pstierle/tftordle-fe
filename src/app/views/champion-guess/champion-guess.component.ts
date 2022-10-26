@@ -3,11 +3,12 @@ import {
   ChampionGuessService,
   IChampionGuessChampion,
   IChampionGuessResult,
-  Match,
 } from "./../../_services/champion-guess.service";
 import { Component, OnInit } from "@angular/core";
 import { debounceTime, filter, Subject } from "rxjs";
 import { environment } from "src/environments/environment";
+import { trigger } from "@angular/animations";
+import { inOut } from "src/app/_animations/animations";
 
 type match = "exact" | "higher" | "lower";
 
@@ -15,6 +16,7 @@ type match = "exact" | "higher" | "lower";
   selector: "app-champion-guess",
   templateUrl: "./champion-guess.component.html",
   styleUrls: ["./champion-guess.component.scss"],
+  animations: [trigger("inOutAnimation", inOut)],
 })
 export class ChampionGuessComponent implements OnInit {
   constructor(
