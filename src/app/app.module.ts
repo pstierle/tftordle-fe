@@ -1,19 +1,21 @@
-import { GuessComponent } from './views/champion-guess/guess/guess.component';
-import { ModalService } from './_services/modal.service';
-import { NavbarComponent } from './views/navabr/navbar.component';
-import { ChampionGuessComponent } from './views/champion-guess/champion-guess.component';
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule } from '@angular/common/http';
-import { OverlayModule } from '@angular/cdk/overlay';
+import { ShowAfterDirective } from "./_directives/show-after.directive";
+import { ModalService } from "./_services/modal.service";
+import { NavbarComponent } from "./views/navabr/navbar.component";
+import { ChampionGuessComponent } from "./views/champion-guess/champion-guess.component";
+import { NgModule } from "@angular/core";
+import { BrowserModule } from "@angular/platform-browser";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { HttpClientModule } from "@angular/common/http";
+import { OverlayModule } from "@angular/cdk/overlay";
 
-import { AppComponent } from './app.component';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { IconModule } from './components/icons/icon.module';
-import { TraitGuessComponent } from './views/trait-guess/trait-guess.component';
-import { ClickOutsideDirective } from './_directives/click-outside.directive';
+import { AppComponent } from "./app.component";
+import { CommonModule } from "@angular/common";
+import { FormsModule } from "@angular/forms";
+import { IconModule } from "./components/icons/icon.module";
+import { TraitGuessComponent } from "./views/trait-guess/trait-guess.component";
+import { ClickOutsideDirective } from "./_directives/click-outside.directive";
+import { CdkTableModule } from "@angular/cdk/table";
+import { MatchIconComponent } from "./views/champion-guess/match-icon/match-icon.component";
 
 @NgModule({
   declarations: [
@@ -21,8 +23,9 @@ import { ClickOutsideDirective } from './_directives/click-outside.directive';
     TraitGuessComponent,
     ChampionGuessComponent,
     ClickOutsideDirective,
+    ShowAfterDirective,
     NavbarComponent,
-    GuessComponent
+    MatchIconComponent,
   ],
   imports: [
     BrowserModule,
@@ -32,6 +35,7 @@ import { ClickOutsideDirective } from './_directives/click-outside.directive';
     FormsModule,
     IconModule,
     OverlayModule,
+    CdkTableModule,
   ],
   providers: [ModalService],
   bootstrap: [AppComponent],

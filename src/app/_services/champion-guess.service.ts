@@ -13,6 +13,7 @@ export interface IChampionGuessChampion {
   cost: number;
   range: number;
   traits?: ITrait[];
+  results?: IChampionGuessResult[];
 }
 
 export interface IChampionGuessResponse {
@@ -21,6 +22,12 @@ export interface IChampionGuessResponse {
 }
 
 export type Match = "exact" | "higher" | "lower" | "wrong" | "some";
+
+export interface IChampionGuessResult {
+  attrLabel: string;
+  matchState: Match;
+  userGuessValue: any;
+}
 
 @Injectable({
   providedIn: "root",

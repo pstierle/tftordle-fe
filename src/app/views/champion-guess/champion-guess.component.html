@@ -1,5 +1,7 @@
-<div class="flex flex-col gap-5 max-w-xl">
-  <div class="p-5 rounded flex flex-col gap-3 items-center primary-input">
+<div class="flex flex-col gap-5 place-items-center max-w-3xl">
+  <div
+    class="p-5 rounded flex flex-col gap-3 items-center primary-input w-[30rem]"
+  >
     <p class="font-semibold text-xl">
       Guess today's Teamfight Tactics champion!
     </p>
@@ -15,7 +17,7 @@
   </p>
 
   <div
-    class="relative w-full"
+    class="relative w-[30rem]"
     *ngIf="!(finished$ | async)"
     (clickOutside)="handleClickOutSide()"
   >
@@ -66,11 +68,105 @@
     </div>
   </div>
 
-  <div class="flex flex-col gap-2 items-center justify-center">
-    <app-guess
-      class="w-full"
-      *ngFor="let guess of guesses$ | async"
-      [champion]="guess"
-    ></app-guess>
-  </div>
+  <table cdk-table [dataSource]="dataSource">
+    <ng-container cdkColumnDef="champion">
+      <th cdk-header-cell *cdkHeaderCellDef>Champion</th>
+      <td
+        cdk-cell
+        *cdkCellDef="let element"
+        class="flex items-center justify-center"
+      >
+        <div>
+          <img
+            [src]="element.imagePath"
+            alt="Logo"
+            class="w-10 h-10"
+            *ngIf="element.imagePath"
+          />
+        </div>
+      </td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container cdkColumnDef="set">
+      <th cdk-header-cell *cdkHeaderCellDef>Set</th>
+      <td cdk-cell *cdkCellDef="let element">
+        <div
+          [ngClass]="matchStateClass(element.results, 'set')"
+          class="flex items-center justify-between gap-1"
+          showAfter
+          [delay]="500"
+        >
+          <p>{{ element.set }}</p>
+          <app-match-icon
+            [matchState]="
+              matchStateByAttrresults(element.results, 'set')?.matchState
+            "
+          ></app-match-icon>
+        </div>
+      </td>
+    </ng-container>
+
+    <!-- Weight Column -->
+    <ng-container cdkColumnDef="cost">
+      <th cdk-header-cell *cdkHeaderCellDef>Cost</th>
+      <td cdk-cell *cdkCellDef="let element">
+        <div
+          class="flex items-center justify-center gap-1"
+          [ngClass]="matchStateClass(element.results, 'cost')"
+          showAfter
+          [delay]="1000"
+        >
+          <p>
+            {{ element.cost }}
+          </p>
+          <app-gold-icon class="w-4 h-4"></app-gold-icon>
+          <app-match-icon
+            [matchState]="
+              matchStateByAttrresults(element.results, 'cost')?.matchState
+            "
+          ></app-match-icon>
+        </div>
+      </td>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container cdkColumnDef="range">
+      <th cdk-header-cell *cdkHeaderCellDef>Range</th>
+      <td cdk-cell *cdkCellDef="let element">
+        <div
+          [ngClass]="matchStateClass(element.results, 'range')"
+          class="flex items-center justify-between gap-1"
+          showAfter
+          [delay]="1500"
+        >
+          <p>{{ element.range }}</p>
+          <app-match-icon
+            [matchState]="
+              matchStateByAttrresults(element.results, 'range')?.matchState
+            "
+          ></app-match-icon>
+        </div>
+      </td>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container cdkColumnDef="traits">
+      <th cdk-header-cell *cdkHeaderCellDef>Traits</th>
+      <td cdk-cell *cdkCellDef="let element">
+        <div
+          [ngClass]="matchStateClass(element.results, 'traits')"
+          showAfter
+          [delay]="2000"
+          (onShow)="checkFinished(element.results)"
+          class="justify-center"
+        >
+          <p>{{ element.traits }}</p>
+        </div>
+      </td>
+    </ng-container>
+
+    <tr cdk-header-row *cdkHeaderRowDef="displayedColumns"></tr>
+    <tr cdk-row *cdkRowDef="let row; columns: displayedColumns"></tr>
+  </table>
 </div>

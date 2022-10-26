@@ -1,0 +1,14 @@
+<div class="flex items-center justify-center h-6 w-6">
+  <app-check-icon
+    *ngIf="matchState === 'exact'; else arrow"
+    class="h-6 w-6"
+  ></app-check-icon>
+  <ng-template #arrow>
+    <app-up-arrow-icon
+      [ngClass]="{
+        'rotate-180': matchState === 'lower'
+      }"
+      class="h-6 w-6"
+    ></app-up-arrow-icon>
+  </ng-template>
+</div>

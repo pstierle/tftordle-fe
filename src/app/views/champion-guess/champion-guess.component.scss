@@ -1,0 +1,27 @@
+td {
+  text-align: center;
+  padding: 10px;
+  div {
+    padding: 5px 15px;
+  }
+}
+
+.cdk-cell {
+  div {
+    animation: fadein 2s;
+  }
+  &.cdk-column-traits {
+    div {
+      word-break: break-all;
+    }
+  }
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
