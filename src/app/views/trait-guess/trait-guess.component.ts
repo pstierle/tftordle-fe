@@ -82,7 +82,7 @@ export class TraitGuessComponent implements OnInit {
 
   copyShareLink() {
     this.clipboard.copy(
-      `I found the Tftordle guess trait's in ${this.guessCount$.getValue()} tries. https://www.tftordle.com/`
+      `I found the Tftordle guess trait's in ${this.guessCount$.getValue()} tries! https://www.tftordle.com/`
     );
   }
 }

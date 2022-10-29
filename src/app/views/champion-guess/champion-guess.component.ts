@@ -132,7 +132,7 @@ export class ChampionGuessComponent implements OnInit {
 
   copyShareLink() {
     this.clipboard.copy(
-      `I found the Tftordle champion guess champion in ${this.guessCount$.getValue()} tries. https://www.tftordle.com/`
+      `I found the Tftordle champion guess champion in ${this.guessCount$.getValue()} tries! https://www.tftordle.com/`
     );
   }
 }
