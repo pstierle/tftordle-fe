@@ -1,6 +1,5 @@
 import { ShowAfterDirective } from "./_directives/show-after.directive";
 import { ModalService } from "./_services/modal.service";
-import { NavbarComponent } from "./views/navabar/navbar.component";
 import { ChampionGuessComponent } from "./views/champion-guess/champion-guess.component";
 import { NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
@@ -16,6 +15,7 @@ import { TraitGuessComponent } from "./views/trait-guess/trait-guess.component";
 import { ClickOutsideDirective } from "./_directives/click-outside.directive";
 import { CdkTableModule } from "@angular/cdk/table";
 import { MatchIconComponent } from "./views/champion-guess/match-icon/match-icon.component";
+import { NavbarComponent } from "./views/navbar/navbar.component";
 
 @NgModule({
   declarations: [
@@ -24,8 +24,8 @@ import { MatchIconComponent } from "./views/champion-guess/match-icon/match-icon
     ChampionGuessComponent,
     ClickOutsideDirective,
     ShowAfterDirective,
-    NavbarComponent,
     MatchIconComponent,
+    NavbarComponent,
   ],
   imports: [
     BrowserModule,
