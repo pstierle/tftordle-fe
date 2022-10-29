@@ -22,23 +22,19 @@ body {
 
 .primary-input {
   background-color: #1d2328;
-  border: 3px solid;
-  border-image-slice: 1;
-  border-image-source: linear-gradient(to left, #0a6f82, #11b5b2) !important;
+  border: 2.5px solid #0a6f82;
   outline: none;
 }
 
 .secondary-input {
   background-color: #1d2328;
-  border: 3px solid;
-  border-image-slice: 1;
-  border-image-source: linear-gradient(to left, #eecc8a, #968259) !important;
+  border: 2.5px solid #eecc8a;
   outline: none;
 }
 
 .red-border {
   background-color: #1d2328;
-  border: 3px solid;
+  border: 2.5px solid;
   border-image-slice: 1;
   border-image-source: linear-gradient(to left, #942c2c, #ef4444) !important;
   outline: none;
@@ -46,7 +42,7 @@ body {
 
 .green-border {
   background-color: #1d2328;
-  border: 3px solid;
+  border: 2.5px solid;
   border-image-slice: 1;
   border-image-source: linear-gradient(to left, #0f7032, #16a34a) !important;
   outline: none;
@@ -54,7 +50,7 @@ body {
 
 .yellow-border {
   background-color: #1d2328;
-  border: 3px solid;
+  border: 2.5px solid;
   border-image-slice: 1;
   border-image-source: linear-gradient(
     to left,
@@ -85,26 +81,27 @@ body {
 }
 
 .logo {
-  position: relative;
-  padding: 15px 35px 15px 15px;
-  margin-right: 70px;
-  border-radius: 3px;
-
-  .wrapper {
-    top: -18px;
-    left: 145px;
-    position: absolute;
-    height: 100px;
-    width: 100px;
-    padding: 5px;
-    border-radius: 100%;
-    border-width: 3px;
-
-    img {
-    }
+  h1 {
+    font-weight: bold;
+    font-size: 40px;
+    letter-spacing: 5px;
+    color: #f3b03c;
+  }
+  img {
+    width: 80px;
+    height: 80px;
   }
 }
 
 .modal-backdrop {
   background-color: rgba(0, 0, 0, 0.664);
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }

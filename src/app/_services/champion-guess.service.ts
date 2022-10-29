@@ -3,6 +3,7 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { environment } from "src/environments/environment";
 import { BehaviorSubject } from "rxjs";
+import { ILastChampion } from "../_models/models";
 
 export interface IChampionGuessChampion {
   id: string;
@@ -57,5 +58,9 @@ export class ChampionGuessService {
           )
         );
       });
+  }
+
+  getLastChampion() {
+    return this.http.get<ILastChampion>(this.url + "/last");
   }
 }

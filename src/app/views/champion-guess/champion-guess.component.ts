@@ -5,10 +5,11 @@ import {
   IChampionGuessResult,
 } from "./../../_services/champion-guess.service";
 import { Component, OnInit } from "@angular/core";
-import { debounceTime, filter, Subject } from "rxjs";
+import { debounceTime, filter, Observable, Subject } from "rxjs";
 import { environment } from "src/environments/environment";
 import { trigger } from "@angular/animations";
 import { inOut } from "src/app/_animations/animations";
+import { ILastChampion } from "src/app/_models/models";
 
 type match = "exact" | "higher" | "lower";
 
@@ -32,6 +33,7 @@ export class ChampionGuessComponent implements OnInit {
   finished$ = this.championGuessService.finished$;
   guessCount$ = this.championGuessService.guessCount$;
   errorMessage$ = this.championGuessService.errorMessage$;
+  lastChampion$!: Observable<ILastChampion>;
   showResults = false;
   displayedColumns: string[] = ["champion", "set", "cost", "range", "traits"];
 
@@ -42,6 +44,8 @@ export class ChampionGuessComponent implements OnInit {
         filter((query) => !!query)
       )
       .subscribe((query) => this.championGuessService.queryChampions(query));
+
+    this.lastChampion$ = this.championGuessService.getLastChampion();
   }
 
   handleChange(query: string) {

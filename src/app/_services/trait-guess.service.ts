@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { environment } from "src/environments/environment";
 import { BehaviorSubject } from "rxjs";
+import { ILastChampion } from "../_models/models";
 
 export interface ITraitGuessChampion {
   name: string;
@@ -41,7 +42,8 @@ export class TraitGuessService {
   finished$ = new BehaviorSubject<boolean>(false);
   guessCount$ = new BehaviorSubject<number>(0);
   errorMessage$ = new BehaviorSubject<string | undefined>(undefined);
-
+  traitClueCounter$ = new BehaviorSubject<number>(6);
+  statClueCounter$ = new BehaviorSubject<number>(3);
   constructor(private http: HttpClient) {}
 
   url = environment.apiUrl + "/trait-guess";
@@ -95,6 +97,20 @@ export class TraitGuessService {
             this.finished$.next(true);
           }
         } else {
+          if (this.traitClueCounter$.getValue() > 0) {
+            this.traitClueCounter$.next(this.traitClueCounter$.getValue() - 1);
+            console.log(this.traitClueCounter$.getValue());
+            if (this.traitClueCounter$.getValue() === 0) {
+              this.getSameTraitClue();
+            }
+          }
+          if (this.statClueCounter$.getValue() > 0) {
+            this.statClueCounter$.next(this.statClueCounter$.getValue() - 1);
+            if (this.statClueCounter$.getValue() === 0) {
+              this.getStatClue();
+            }
+          }
+
           this.wrongGuesses$.next([
             ...this.wrongGuesses$.getValue(),
             guessResponse.guess,
@@ -102,14 +118,20 @@ export class TraitGuessService {
         }
 
         this.traitQueryResults$.next(
-          this.traitQueryResults$.getValue().filter(
-            (result) =>
-              ![
-                ...this.correctGuesses$.getValue().map((g) => g.label),
-                ...this.wrongGuesses$.getValue().map((g) => g.label),
-              ].includes(result.label)
-          )
-        )
+          this.traitQueryResults$
+            .getValue()
+            .filter(
+              (result) =>
+                ![
+                  ...this.correctGuesses$.getValue().map((g) => g.label),
+                  ...this.wrongGuesses$.getValue().map((g) => g.label),
+                ].includes(result.label)
+            )
+        );
       });
+  }
+
+  getLastChampion() {
+    return this.http.get<ILastChampion>(this.url + "/last");
   }
 }

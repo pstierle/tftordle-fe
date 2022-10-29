@@ -1,17 +1,10 @@
 <div class="w-screen h-screen flex items-center flex-col gap-10">
   <app-navbar class="w-full"></app-navbar>
   <div
-    class="font-bold text-3xl logo mt-20 secondary-input"
+    class="mt-20 logo flex gap-2 items-center"
     *ngIf="selectedGameModeId === undefined"
   >
-    <p>Tftordle</p>
-    <div
-      class="wrapper"
-      [style.backgroundColor]="'#1E2328'"
-      [style.borderColor]="'#AE9667'"
-    >
-      <img src="../assets/logo.png" />
-    </div>
+    <h1>TFTORDLE</h1>
   </div>
   <app-trait-guess *ngIf="selectedGameModeId === 0"></app-trait-guess>
   <app-champion-guess *ngIf="selectedGameModeId === 1"></app-champion-guess>
@@ -25,12 +18,17 @@
       *ngFor="let gameMode of gameModes"
       (click)="selectGameMode(gameMode.id)"
     >
-      <p class="font font-semibold">{{ gameMode.description }}</p>
+      <p class="font font-semibold text-center w-full">
+        {{ gameMode.description }}
+      </p>
     </button>
   </div>
 
   <ng-template #backBtn>
-    <button (click)="reset()" class="px-6 py-2 font-bold primary-input">
+    <button
+      (click)="reset()"
+      class="px-6 py-2 font-bold primary-input text-center hover:scale-105 transition-all"
+    >
       Back
     </button>
   </ng-template>

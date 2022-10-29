@@ -1,4 +1,4 @@
-import { debounceTime, Subject, filter } from "rxjs";
+import { debounceTime, Subject, filter, Observable } from "rxjs";
 import { Component, OnInit } from "@angular/core";
 import {
   ITrait,
@@ -6,6 +6,7 @@ import {
 } from "src/app/_services/trait-guess.service";
 import { trigger } from "@angular/animations";
 import { inOut } from "src/app/_animations/animations";
+import { ILastChampion } from "src/app/_models/models";
 
 @Component({
   selector: "app-trait-guess",
@@ -25,18 +26,13 @@ export class TraitGuessComponent implements OnInit {
   finished$ = this.traitGuessService.finished$;
   guessCount$ = this.traitGuessService.guessCount$;
   errorMessage$ = this.traitGuessService.errorMessage$;
-
+  traitClueCounter$ = this.traitGuessService.traitClueCounter$;
+  statClueCounter$ = this.traitGuessService.statClueCounter$;
+  lastChampion$!: Observable<ILastChampion>;
   selectedTrait?: ITrait;
 
   query$ = new Subject<string>();
   query = "";
-
-  traitClueCounter = 6;
-  displayTraitClue = false;
-
-  statClueCounter = 3;
-  displayStatClue = false;
-
   showResults = false;
 
   ngOnInit(): void {
@@ -47,23 +43,7 @@ export class TraitGuessComponent implements OnInit {
         filter((query) => !!query)
       )
       .subscribe((query) => this.traitGuessService.queryTraits(query));
-
-    this.wrongGuesses$.subscribe(() => {
-      if (!this.displayTraitClue) {
-        this.traitClueCounter -= 1;
-        if (this.traitClueCounter === 0) {
-          this.displayTraitClue = true;
-          this.traitGuessService.getSameTraitClue();
-        }
-      }
-      if (!this.displayStatClue) {
-        this.statClueCounter -= 1;
-        if (this.statClueCounter === 0) {
-          this.displayStatClue = true;
-          this.traitGuessService.getStatClue();
-        }
-      }
-    });
+    this.lastChampion$ = this.traitGuessService.getLastChampion();
   }
 
   handleChange(query: string) {
