@@ -10,6 +10,7 @@ import { environment } from "src/environments/environment";
 import { trigger } from "@angular/animations";
 import { inOut } from "src/app/_animations/animations";
 import { ILastChampion } from "src/app/_models/models";
+import { Clipboard } from "@angular/cdk/clipboard";
 
 type match = "exact" | "higher" | "lower";
 
@@ -22,7 +23,8 @@ type match = "exact" | "higher" | "lower";
 export class ChampionGuessComponent implements OnInit {
   constructor(
     private championGuessService: ChampionGuessService,
-    private http: HttpClient
+    private http: HttpClient,
+    private clipboard: Clipboard
   ) {}
 
   query$ = new Subject<string>();
@@ -126,5 +128,11 @@ export class ChampionGuessComponent implements OnInit {
     const mapped = results.map((r) => r.matchState);
     const finished = mapped.every((v) => v === "exact");
     this.finished$.next(finished);
+  }
+
+  copyShareLink() {
+    this.clipboard.copy(
+      `I found the Tftordle champion guess champion in ${this.guessCount$.getValue()} tries. https://www.tftordle.com/`
+    );
   }
 }

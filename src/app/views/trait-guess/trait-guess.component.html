@@ -23,11 +23,24 @@
       />
       <span>{{ randomChampion.name }} - Set {{ randomChampion.set }}</span>
     </p>
-    <p class="w-full font-semibold text-center" *ngIf="finished$ | async">
-      You Correctly guessed all Trait's in
-      <span class="text-green-400">{{ guessCount$ | async }}</span> Tries!
-    </p>
-    <div class="flex gap-2 items-center justify-start w-full">
+    <div *ngIf="finished$ | async" class="flex flex-col gap-1">
+      <p class="w-full font-semibold text-center">
+        You Correctly guessed all Trait's in
+        <span class="text-green-400">{{ guessCount$ | async }}</span> Tries!
+      </p>
+      <div
+        class="flex items-center gap-2 hover:cursor-pointer justify-center"
+        (click)="copyShareLink()"
+      >
+        <p class="font-bold">Share</p>
+        <app-share-icon class="w-6 h-6"></app-share-icon>
+      </div>
+    </div>
+
+    <div
+      class="flex gap-2 items-center justify-start w-full"
+      *ngIf="!(finished$ | async)"
+    >
       <app-question-mark-icon
         class="text-gray-400 w-4 h-4 flex-shrink-0"
       ></app-question-mark-icon>

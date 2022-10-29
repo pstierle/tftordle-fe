@@ -5,11 +5,19 @@
     <p class="font-semibold text-xl">
       Guess today's Teamfight Tactics champion!
     </p>
-
-    <p class="w-full font-semibold text-center" *ngIf="finished$ | async">
-      You Correctly guessed the Champion in
-      <span class="text-green-400">{{ guessCount$ | async }}</span> tries!
-    </p>
+    <div class="flex flex-col gap-1">
+      <p class="w-full font-semibold text-center" *ngIf="finished$ | async">
+        You Correctly guessed the Champion in
+        <span class="text-green-400">{{ guessCount$ | async }}</span> tries!
+      </p>
+      <div
+        class="flex items-center gap-2 hover:cursor-pointer justify-center"
+        (click)="copyShareLink()"
+      >
+        <p class="font-bold">Share</p>
+        <app-share-icon class="w-6 h-6"></app-share-icon>
+      </div>
+    </div>
   </div>
 
   <p *ngIf="errorMessage$ | async" class="text-center text-sm text-red-400">

@@ -7,6 +7,7 @@ import {
 import { trigger } from "@angular/animations";
 import { inOut } from "src/app/_animations/animations";
 import { ILastChampion } from "src/app/_models/models";
+import { Clipboard } from "@angular/cdk/clipboard";
 
 @Component({
   selector: "app-trait-guess",
@@ -15,7 +16,10 @@ import { ILastChampion } from "src/app/_models/models";
   animations: [trigger("inOutAnimation", inOut)],
 })
 export class TraitGuessComponent implements OnInit {
-  constructor(private traitGuessService: TraitGuessService) {}
+  constructor(
+    private traitGuessService: TraitGuessService,
+    private clipboard: Clipboard
+  ) {}
 
   randomChampion$ = this.traitGuessService.randomChampion$;
   results$ = this.traitGuessService.traitQueryResults$;
@@ -74,5 +78,11 @@ export class TraitGuessComponent implements OnInit {
 
   handleClickOutSide() {
     this.showResults = false;
+  }
+
+  copyShareLink() {
+    this.clipboard.copy(
+      `I found the Tftordle guess trait's in ${this.guessCount$.getValue()} tries. https://www.tftordle.com/`
+    );
   }
 }

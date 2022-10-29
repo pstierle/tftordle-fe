@@ -1,6 +1,6 @@
 import { ShowAfterDirective } from "./_directives/show-after.directive";
 import { ModalService } from "./_services/modal.service";
-import { NavbarComponent } from "./views/navabr/navbar.component";
+import { NavbarComponent } from "./views/navabar/navbar.component";
 import { ChampionGuessComponent } from "./views/champion-guess/champion-guess.component";
 import { NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
