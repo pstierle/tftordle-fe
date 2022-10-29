@@ -16,8 +16,8 @@
     <p class="font-semibold text-xl">
       Guess today's Teamfight Tactics champion!
     </p>
-    <div class="flex flex-col gap-1">
-      <p class="w-full font-semibold text-center" *ngIf="finished$ | async">
+    <div class="flex flex-col gap-1" *ngIf="finished$ | async">
+      <p class="w-full font-semibold text-center">
         You Correctly guessed the Champion in
         <span class="text-green-400">{{ guessCount$ | async }}</span> tries!
       </p>
