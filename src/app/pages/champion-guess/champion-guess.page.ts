@@ -12,15 +12,13 @@ import { inOut } from "src/app/_animations/animations";
 import { ILastChampion } from "src/app/_models/models";
 import { Clipboard } from "@angular/cdk/clipboard";
 
-type match = "exact" | "higher" | "lower";
-
 @Component({
   selector: "app-champion-guess",
-  templateUrl: "./champion-guess.component.html",
-  styleUrls: ["./champion-guess.component.scss"],
+  templateUrl: "./champion-guess.page.html",
+  styleUrls: ["./champion-guess.page.scss"],
   animations: [trigger("inOutAnimation", inOut)],
 })
-export class ChampionGuessComponent implements OnInit {
+export class ChampionGuessPage implements OnInit {
   constructor(
     private championGuessService: ChampionGuessService,
     private http: HttpClient,
@@ -107,7 +105,7 @@ export class ChampionGuessComponent implements OnInit {
   }
 
   get dataSource() {
-    return this.guesses$.getValue();
+    return this.guesses$.getValue().reverse();
   }
 
   matchStateClass(results: IChampionGuessResult[], attr: string) {

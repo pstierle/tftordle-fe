@@ -1,35 +1,4 @@
 <div class="w-screen h-screen flex items-center flex-col gap-10">
   <app-navbar class="w-full"></app-navbar>
-  <div
-    class="mt-20 logo flex gap-2 items-center"
-    *ngIf="selectedGameModeId === undefined"
-  >
-    <h1>TFTORDLE</h1>
-  </div>
-  <app-trait-guess *ngIf="selectedGameModeId === 0"></app-trait-guess>
-  <app-champion-guess *ngIf="selectedGameModeId === 1"></app-champion-guess>
-
-  <div
-    class="flex flex-col gap-6"
-    *ngIf="selectedGameModeId === undefined; else backBtn"
-  >
-    <button
-      class="py-3 px-6 hover:scale-105 transition-all flex flex-col justify-start gap-3 primary-input"
-      *ngFor="let gameMode of gameModes"
-      (click)="selectGameMode(gameMode.id)"
-    >
-      <p class="font font-semibold text-center w-full">
-        {{ gameMode.description }}
-      </p>
-    </button>
-  </div>
-
-  <ng-template #backBtn>
-    <button
-      (click)="reset()"
-      class="px-6 py-2 font-bold primary-input text-center hover:scale-105 transition-all"
-    >
-      Back
-    </button>
-  </ng-template>
+  <router-outlet></router-outlet>
 </div>

@@ -6,8 +6,8 @@
     >
     was
     <span class="text-green-500 font-semibold"
-      >{{ (lastChampion$ | async)?.name }} - Set
-      {{ (lastChampion$ | async)?.set }}</span
+      >{{ (lastChampion$ | async)?.name }} - Set {{ (lastChampion$ | async)?.set
+      }}</span
     >.
   </p>
   <div
@@ -137,9 +137,7 @@
           showAfter
           [delay]="1000"
         >
-          <p>
-            {{ element.cost }}
-          </p>
+          <p>{{ element.cost }}</p>
           <app-gold-icon class="w-4 h-4"></app-gold-icon>
           <app-match-icon
             [matchState]="
@@ -189,4 +187,5 @@
     <tr cdk-header-row *cdkHeaderRowDef="displayedColumns"></tr>
     <tr cdk-row *cdkRowDef="let row; columns: displayedColumns"></tr>
   </table>
+  <app-home-button class="mt-5"></app-home-button>
 </div>

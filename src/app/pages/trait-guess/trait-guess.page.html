@@ -6,8 +6,8 @@
     >
     was
     <span class="text-green-500 font-semibold"
-      >{{ (lastChampion$ | async)?.name }} - Set
-      {{ (lastChampion$ | async)?.set }}</span
+      >{{ (lastChampion$ | async)?.name }} - Set {{ (lastChampion$ | async)?.set
+      }}</span
     >.
   </p>
   <div
@@ -60,9 +60,9 @@
           <div class="flex gap-1 items-center">
             <p class="text-sm text-gray-400">Cost:</p>
             <div class="flex gap-1 items-center">
-              <span class="text-white font-bold text-sm">{{
-                statClue.cost
-              }}</span>
+              <span class="text-white font-bold text-sm"
+                >{{ statClue.cost }}</span
+              >
               <app-gold-icon class="w-4 h-4"></app-gold-icon>
             </div>
           </div>
@@ -91,9 +91,9 @@
         *ngIf="(traitClueCounter$ | async) ?? 0 > 0; else traitClue"
       >
         Champions with same Trait Clue in
-        <span class="text-white font-bold">{{
-          traitClueCounter$ | async
-        }}</span>
+        <span class="text-white font-bold"
+          >{{ traitClueCounter$ | async }}</span
+        >
         tries.
       </p>
       <ng-template #traitClue>
@@ -160,9 +160,7 @@
           (click)="selectGuess(result)"
         >
           <img [src]="result.imagePath" class="w-5 h-5" />
-          <p>
-            {{ result.label }}
-          </p>
+          <p>{{ result.label }}</p>
         </div>
       </ng-template>
     </div>
@@ -189,4 +187,6 @@
       <p>{{ guess.label }}</p>
     </div>
   </div>
+
+  <app-home-button class="mt-5"></app-home-button>
 </div>

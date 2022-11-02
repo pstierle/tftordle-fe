@@ -1,0 +1,17 @@
+<div class="flex items-center flex-col gap-10">
+  <div class="mt-20 logo flex gap-2 items-center">
+    <h1>TFTORDLE</h1>
+  </div>
+
+  <div class="flex flex-col gap-6">
+    <a
+      class="py-3 px-6 hover:scale-105 transition-all flex flex-col justify-start gap-3 primary-input"
+      *ngFor="let gameMode of gameModes"
+      [routerLink]="gameMode.link"
+    >
+      <p class="font font-semibold text-center w-full">
+        {{ gameMode.description }}
+      </p>
+    </a>
+  </div>
+</div>

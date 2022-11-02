@@ -1,21 +1,21 @@
-import { debounceTime, Subject, filter, Observable } from "rxjs";
-import { Component, OnInit } from "@angular/core";
-import {
-  ITrait,
-  TraitGuessService,
-} from "src/app/_services/trait-guess.service";
 import { trigger } from "@angular/animations";
+import { Component, OnInit } from "@angular/core";
+import { Observable, Subject, debounceTime, filter } from "rxjs";
 import { inOut } from "src/app/_animations/animations";
 import { ILastChampion } from "src/app/_models/models";
+import {
+  TraitGuessService,
+  ITrait,
+} from "src/app/_services/trait-guess.service";
 import { Clipboard } from "@angular/cdk/clipboard";
 
 @Component({
   selector: "app-trait-guess",
-  templateUrl: "./trait-guess.component.html",
-  styleUrls: ["trait-guess.component.scss"],
+  templateUrl: "./trait-guess.page.html",
+  styleUrls: [],
   animations: [trigger("inOutAnimation", inOut)],
 })
-export class TraitGuessComponent implements OnInit {
+export class TraitGuessPage implements OnInit {
   constructor(
     private traitGuessService: TraitGuessService,
     private clipboard: Clipboard
