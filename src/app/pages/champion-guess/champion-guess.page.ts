@@ -33,6 +33,8 @@ export class ChampionGuessPage implements OnInit {
   finished$ = this.championGuessService.finished$;
   guessCount$ = this.championGuessService.guessCount$;
   errorMessage$ = this.championGuessService.errorMessage$;
+  wrongGuessCount$ = this.championGuessService.wrongGuessCount$;
+  traitClue$ = this.championGuessService.traitClue$;
   lastChampion$!: Observable<ILastChampion>;
   showResults = false;
   displayedColumns: string[] = ["champion", "set", "cost", "range", "traits"];
@@ -79,13 +81,13 @@ export class ChampionGuessPage implements OnInit {
         .subscribe((results) => {
           if (this.selectedChampion) {
             this.guesses$.next([
-              ...this.guesses$.getValue(),
               {
                 ...this.selectedChampion,
                 traits: results.find((r) => r.attrLabel === "traits")
                   ?.userGuessValue,
                 results: results,
               },
+              ...this.guesses$.getValue(),
             ]);
           }
           this.results$.next(
@@ -105,7 +107,11 @@ export class ChampionGuessPage implements OnInit {
   }
 
   get dataSource() {
-    return this.guesses$.getValue().reverse();
+    return this.guesses$.getValue();
+  }
+
+  get wrongGuessCount() {
+    return this.wrongGuessCount$.getValue();
   }
 
   matchStateClass(results: IChampionGuessResult[], attr: string) {
@@ -126,6 +132,12 @@ export class ChampionGuessPage implements OnInit {
     const mapped = results.map((r) => r.matchState);
     const finished = mapped.every((v) => v === "exact");
     this.finished$.next(finished);
+    if (!finished) {
+      this.wrongGuessCount$.next(this.wrongGuessCount$.getValue() + 1);
+      if (this.wrongGuessCount$.getValue() >= 3) {
+        this.championGuessService.getTraitClue();
+      }
+    }
   }
 
   copyShareLink() {

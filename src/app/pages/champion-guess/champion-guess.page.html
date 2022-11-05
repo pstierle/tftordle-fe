@@ -29,6 +29,26 @@
         <app-share-icon class="w-6 h-6"></app-share-icon>
       </div>
     </div>
+    <div *ngIf="!(finished$ | async)">
+      <div *ngIf="wrongGuessCount < 3; else clue" class="flex gap-3">
+        <app-question-mark-icon
+          class="w-5 h-5 flex-shrink-0"
+        ></app-question-mark-icon>
+        <p class="text-gray-400">
+          Trait clue in
+          <span class="text-white">{{3 - wrongGuessCount}} </span>tries.
+        </p>
+      </div>
+      <ng-template #clue>
+        <div class="flex flex-wrap gap-1 items-center">
+          <p class="text-sm text-gray-400">Trait's:</p>
+          <p *ngFor="let trait of traitClue$ | async; let i = index">
+            {{trait}}
+            <span *ngIf="((traitClue$ | async)?.length ?? 0) - 1 !== i">,</span>
+          </p>
+        </div>
+      </ng-template>
+    </div>
   </div>
 
   <p *ngIf="errorMessage$ | async" class="text-center text-sm text-red-400">
