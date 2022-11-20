@@ -1,31 +1,13 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { environment } from "src/environments/environment";
-import { BehaviorSubject } from "rxjs";
-import { ILastChampion } from "../_models/models";
-
-export interface ITraitGuessChampion {
-  name: string;
-  set: number;
-  imagePath: string;
-}
-
-export interface IStatClue {
-  cost: number;
-  oneTraitStartsWith: string;
-  traitCount: number;
-}
-
-export interface IGuessResponse {
-  correct: boolean;
-  needed?: number;
-  guess: ITrait;
-}
-
-export interface ITrait {
-  label: string;
-  imagePath: string;
-}
+import {
+  IGuessResponse,
+  ILastChampion,
+  IStatClue,
+  ITrait,
+  ITraitGuessChampion,
+} from "../_models/models";
 
 @Injectable({
   providedIn: "root",

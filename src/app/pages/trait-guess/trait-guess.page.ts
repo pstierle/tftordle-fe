@@ -13,11 +13,9 @@ import {
   takeUntil,
 } from "rxjs";
 import { inOut } from "src/app/_animations/animations";
-import {
-  TraitGuessService,
-  ITrait,
-} from "src/app/_services/trait-guess.service";
+import { TraitGuessService } from "src/app/_services/trait-guess.service";
 import { Clipboard } from "@angular/cdk/clipboard";
+import { ITrait } from "src/app/_models/models";
 
 @Component({
   selector: "app-trait-guess",

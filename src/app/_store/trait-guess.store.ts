@@ -1,30 +1,8 @@
+import { IStatClue, ITrait, ITraitGuess } from "./../_models/models";
 import { BaseComponent } from "./../components/base.component";
-import { Injectable, OnInit } from "@angular/core";
+import { Injectable } from "@angular/core";
 import { BehaviorSubject, map, takeUntil } from "rxjs";
-import { ILastChampion } from "../_models/models";
 import { TraitGuessService } from "../_services/trait-guess.service";
-
-export interface ITraitGuessChampion {
-  name: string;
-  set: number;
-  imagePath: string;
-}
-
-export interface IStatClue {
-  cost: number;
-  oneTraitStartsWith: string;
-  traitCount: number;
-}
-
-export interface ITrait {
-  label: string;
-  imagePath: string;
-}
-
-export interface IGuess {
-  correct: boolean;
-  trait: ITrait;
-}
 
 @Injectable({
   providedIn: "root",
@@ -33,7 +11,7 @@ export class TraitGuessStore extends BaseComponent {
   private guessChampion$ = this.traitGuessService.getTraitGuessChampion();
   private lastChampion$ = this.traitGuessService.getLastChampion();
 
-  private guesses$ = new BehaviorSubject<IGuess[]>([]);
+  private guesses$ = new BehaviorSubject<ITraitGuess[]>([]);
   private finished$ = new BehaviorSubject<boolean>(false);
 
   private sameTraitClue$ = new BehaviorSubject<string[] | undefined>(undefined);
