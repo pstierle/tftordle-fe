@@ -1,0 +1,8 @@
+<p *rxLet="lastChampion$; let lastChampion">
+  Yesterday's Champion
+  <span class="text-blue-500 font-semibold">#{{ lastChampion?.number }}</span>
+  was
+  <span class="text-green-500 font-semibold"
+    >{{ lastChampion?.name }} - Set {{ lastChampion?.set }}</span
+  >.
+</p>

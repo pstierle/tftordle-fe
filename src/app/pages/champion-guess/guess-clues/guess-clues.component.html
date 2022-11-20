@@ -1,0 +1,9 @@
+<app-clue [displayClue]="guessCount >= traitClueThreshold" [label]="clueLabel">
+  <div class="flex flex-wrap gap-1 items-center">
+    <p class="text-sm text-gray-400">Trait's:</p>
+    <p *ngFor="let trait of traitClue$ | async; let i = index">
+      {{ trait }}
+      <span *ngIf="((traitClue$ | async)?.length ?? 0) - 1 !== i">,</span>
+    </p>
+  </div>
+</app-clue>

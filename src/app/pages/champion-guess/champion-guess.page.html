@@ -1,25 +1,18 @@
-<!-- <div class="flex flex-col gap-5 place-items-center max-w-3xl">
-  <p>
-    Yesterday's Champion
-    <span class="text-blue-500 font-semibold"
-      >#{{ (lastChampion$ | async)?.number }}</span
-    >
-    was
-    <span class="text-green-500 font-semibold"
-      >{{ (lastChampion$ | async)?.name }} - Set {{ (lastChampion$ | async)?.set
-      }}</span
-    >.
-  </p>
+<div
+  class="flex flex-col gap-5 place-items-center max-w-3xl"
+  *rxLet="finished$; let finished"
+>
+  <app-last-champion [lastChampion$]="lastChampion$"></app-last-champion>
   <div
     class="p-5 rounded flex flex-col gap-3 items-center primary-input w-[30rem]"
   >
     <p class="font-semibold text-xl">
       Guess today's Teamfight Tactics champion!
     </p>
-    <div class="flex flex-col gap-1" *ngIf="finished$ | async">
+    <div class="flex flex-col gap-1" *ngIf="finished">
       <p class="w-full font-semibold text-center">
         You Correctly guessed the Champion in
-        <span class="text-green-400">{{ guessCount$ | async }}</span> tries!
+        <span class="text-green-400">{{ guesses.length }}</span> tries!
       </p>
       <div
         class="flex items-center gap-2 hover:cursor-pointer justify-center"
@@ -29,86 +22,18 @@
         <app-share-icon class="w-6 h-6"></app-share-icon>
       </div>
     </div>
-    <div *ngIf="!(finished$ | async)">
-      <div *ngIf="wrongGuessCount < 3; else clue" class="flex gap-3">
-        <app-question-mark-icon
-          class="w-5 h-5 flex-shrink-0"
-        ></app-question-mark-icon>
-        <p class="text-gray-400">
-          Trait clue in
-          <span class="text-white">{{3 - wrongGuessCount}} </span>tries.
-        </p>
-      </div>
-      <ng-template #clue>
-        <div class="flex flex-wrap gap-1 items-center">
-          <p class="text-sm text-gray-400">Trait's:</p>
-          <p *ngFor="let trait of traitClue$ | async; let i = index">
-            {{trait}}
-            <span *ngIf="((traitClue$ | async)?.length ?? 0) - 1 !== i">,</span>
-          </p>
-        </div>
-      </ng-template>
-    </div>
+    <app-guess-clues *ngIf="!finished"></app-guess-clues>
   </div>
+  <app-result-form
+    *ngIf="!finished"
+    (queryChange)="handleQueryChange($event)"
+    [(selectedResult)]="selectedChampion"
+    (handleGuess)="guess()"
+    [results]="(results$ | async)"
+    [placeholder]="'Search for Traits'"
+  ></app-result-form>
 
-  <p *ngIf="errorMessage$ | async" class="text-center text-sm text-red-400">
-    {{ errorMessage$ | async }}
-  </p>
-
-  <div
-    class="relative w-[30rem]"
-    *ngIf="!(finished$ | async)"
-    (clickOutside)="handleClickOutSide()"
-  >
-    <div class="flex gap-2 items-center">
-      <input
-        type="text"
-        class="px-4 py-2 w-full primary-input"
-        [ngModel]="query"
-        (ngModelChange)="handleChange($event)"
-        (focus)="handleFocus()"
-        placeholder="Search for Champions"
-      />
-      <button
-        class="px-4 py-2 font-semibold secondary-input disabled:opacity-50"
-        [style.borderColor]="'#AE9667'"
-        (click)="guess()"
-        [disabled]="selectedChampion === undefined"
-      >
-        Guess
-      </button>
-    </div>
-    <div
-      class="absolute w-full overflow-y-auto z-10"
-      [style.backgroundColor]="'#1E2328'"
-      *ngIf="showResults"
-      [@inOutAnimation]
-    >
-      <p
-        class="w-full text-center font-semibold p-2"
-        *ngIf="(results$ | async)?.length === 0; else results"
-      >
-        No results found
-      </p>
-      <ng-template #results>
-        <div
-          *ngFor="let result of results$ | async"
-          class="w-full px-4 py-2 hover:cursor-pointer hover:bg-[#22262B] transition-colors flex items-center gap-2"
-          (click)="selectGuess(result)"
-        >
-          <img
-            [src]="result.imagePath"
-            alt="Logo"
-            class="h-8 w-8"
-            *ngIf="result.imagePath"
-          />
-          <p>{{ result.name }} - Set: {{ result.set }}</p>
-        </div>
-      </ng-template>
-    </div>
-  </div>
-
-  <table cdk-table [dataSource]="dataSource" class="min-w-[30rem]">
+  <table cdk-table [dataSource]="guesses" class="min-w-[30rem]">
     <ng-container cdkColumnDef="champion">
       <th cdk-header-cell *cdkHeaderCellDef>Champion</th>
       <td
@@ -204,4 +129,4 @@
     <tr cdk-row *cdkRowDef="let row; columns: displayedColumns"></tr>
   </table>
   <app-home-button class="mt-5"></app-home-button>
-</div> -->
+</div>

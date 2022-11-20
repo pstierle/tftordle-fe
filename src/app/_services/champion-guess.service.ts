@@ -1,7 +1,11 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { environment } from "src/environments/environment";
-import { IChampionGuessChampion, ILastChampion } from "../_models/models";
+import {
+  IChampionGuessChampion,
+  IChampionGuessResult,
+  ILastChampion,
+} from "../_models/models";
 
 @Injectable({
   providedIn: "root",
@@ -23,5 +27,11 @@ export class ChampionGuessService {
 
   getTraitClue() {
     return this.http.get<string[]>(this.url + "/trait-clue");
+  }
+
+  checkGuess(champion: IChampionGuessChampion) {
+    return this.http.get<IChampionGuessResult[]>(
+      environment.apiUrl + "/champion-guess/check-guess-attr/" + champion.id
+    );
   }
 }

@@ -1,14 +1,14 @@
-import { BaseComponent } from "./../../../components/base.component";
+import { BaseComponent } from "../../../components/base.component";
 import { Component, OnInit } from "@angular/core";
 import { TraitGuessStore } from "src/app/_store/trait-guess.store";
-import { map, takeUntil } from "rxjs";
+import { takeUntil } from "rxjs";
 
 @Component({
-  selector: "app-trait-clue",
-  templateUrl: "./trait-clue.component.html",
+  selector: "app-guess-clues",
+  templateUrl: "./guess-clues.component.html",
   styleUrls: [],
 })
-export class TraitClueComponent extends BaseComponent implements OnInit {
+export class GuessCluesComponent extends BaseComponent implements OnInit {
   constructor(private store: TraitGuessStore) {
     super();
   }
@@ -42,5 +42,17 @@ export class TraitClueComponent extends BaseComponent implements OnInit {
       }
       this.wrongGuessCount = guesses.length;
     });
+  }
+
+  get statClueLabel() {
+    return `Stat Clue in ${
+      this.store.statClueThreshold - this.wrongGuessCount
+    } tries`;
+  }
+
+  get traitClueLabel() {
+    return `Trait Clue in ${
+      this.store.sameTraitClueThreshold - this.wrongGuessCount
+    } tries`;
   }
 }

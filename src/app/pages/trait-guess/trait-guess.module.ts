@@ -6,10 +6,10 @@ import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { IconModule } from "src/app/components/icons/icon.module";
 import { UiModule } from "src/app/components/ui-module";
-import { TraitClueComponent } from "./trait-clue/trait-clue.component";
+import { GuessCluesComponent } from "./guess-clues/guess-clues.component";
 
 @NgModule({
-  declarations: [TraitGuessPage, TraitClueComponent],
+  declarations: [TraitGuessPage, GuessCluesComponent],
   imports: [
     TraitGuessRoutingModule,
     CommonModule,

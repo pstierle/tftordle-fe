@@ -29,7 +29,11 @@ export class ResultFormComponent {
 
   selectResult(result: any) {
     this.selectedResult = result;
-    this.query = result.label;
+    if (result.label) {
+      this.query = result.label;
+    } else {
+      this.query = `${result.name} - Set ${result.set}`;
+    }
     this.results = [];
     this.selectedResultChange.emit(this.selectedResult);
   }

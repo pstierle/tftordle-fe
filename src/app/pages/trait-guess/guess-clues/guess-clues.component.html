@@ -1,0 +1,34 @@
+<app-clue [label]="statClueLabel" [displayClue]="showClues.stat">
+  <div class="flex flex-col gap-0.5" *rxLet="statClue$; let statClue">
+    <div class="flex gap-1 items-center">
+      <p class="text-sm text-gray-400">Cost:</p>
+      <div class="flex gap-1 items-center">
+        <span class="text-white font-bold text-sm">{{ statClue?.cost }}</span>
+        <app-gold-icon class="w-4 h-4"></app-gold-icon>
+      </div>
+    </div>
+    <p class="text-sm text-gray-400">
+      Traitcount:
+      <span class="text-white font-bold">{{ statClue?.traitCount }}</span>
+    </p>
+    <p class="text-sm text-gray-400">
+      One Trait starts with:
+      <span class="text-white font-bold"
+        >"{{ statClue?.oneTraitStartsWith }}"</span
+      >
+    </p>
+  </div>
+</app-clue>
+
+<app-clue [label]="traitClueLabel" [displayClue]="showClues.trait">
+  <div class="flex flex-wrap gap-2" *rxLet="sameTraitClue$; let sameTraitClue">
+    <p class="text-sm text-gray-400">Champions with at least one same Trait:</p>
+    <p
+      *ngFor="let clue of sameTraitClue; let i = index"
+      class="text-sm text-gray-400 flex"
+    >
+      <span>{{ clue }}</span>
+      <span *ngIf="sameTraitClue?.length ?? 0 - 1 !== i">,</span>
+    </p>
+  </div>
+</app-clue>

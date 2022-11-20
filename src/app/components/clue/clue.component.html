@@ -1,0 +1,11 @@
+<div class="flex gap-2">
+  <app-question-mark-icon
+    class="w-5 h-5 flex-shrink-0"
+  ></app-question-mark-icon>
+  <p class="text-gray-400" *ngIf="!displayClue; else clue">
+    {{ label }}
+  </p>
+  <ng-template #clue>
+    <ng-content></ng-content>
+  </ng-template>
+</div>

@@ -28,7 +28,10 @@
       (click)="selectResult(result)"
     >
       <img [src]="result.imagePath" class="w-5 h-5" />
-      <p>{{ result.label }}</p>
+      <p>
+        {{ result.label ?? result.name }}
+        <span *ngIf="result.set">- Set: {{ result.set }} </span>
+      </p>
     </div>
   </div>
 </div>

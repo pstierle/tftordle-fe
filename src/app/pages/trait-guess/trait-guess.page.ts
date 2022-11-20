@@ -26,7 +26,6 @@ import { ITrait } from "src/app/_models/models";
 export class TraitGuessPage extends BaseComponent implements OnInit {
   constructor(
     private traitGuessService: TraitGuessService,
-    private clipboard: Clipboard,
     private store: TraitGuessStore
   ) {
     super();
@@ -84,7 +83,7 @@ export class TraitGuessPage extends BaseComponent implements OnInit {
   copyShareLink() {
     navigator.share({
       url: "https://www.tftordle.com/",
-      text: "I found the Tftordle guess trait's in ${this.guesses.length} tries!",
+      text: `I found the Tftordle guess trait's in ${this.guesses.length} tries!`,
     });
   }
 }
