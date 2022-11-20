@@ -1,0 +1,34 @@
+<div class="relative" (clickOutside)="handleClickOutSide()">
+  <div class="flex gap-2 items-center">
+    <input
+      type="text"
+      class="px-4 py-2 w-full primary-input"
+      [ngModel]="query"
+      (ngModelChange)="handleChange($event)"
+      [placeholder]="placeholder"
+    />
+    <button
+      class="px-4 py-2 font-semibold secondary-input disabled:opacity-50"
+      [style.borderColor]="'#AE9667'"
+      (click)="guess()"
+      [disabled]="selectedResult === undefined"
+    >
+      Guess
+    </button>
+  </div>
+
+  <div
+    class="absolute w-full max-h-72 overflow-y-auto z-10"
+    [@inOutAnimation]
+    [style.backgroundColor]="'#1d2328'"
+  >
+    <div
+      *ngFor="let result of results"
+      class="w-full px-4 py-2 hover:cursor-pointer hover:bg-[#22262B] transition-colors flex items-center gap-2"
+      (click)="selectResult(result)"
+    >
+      <img [src]="result.imagePath" class="w-5 h-5" />
+      <p>{{ result.label }}</p>
+    </div>
+  </div>
+</div>

@@ -1,32 +1,29 @@
-<div class="flex flex-col gap-5 items-center">
-  <p>
+<div class="flex flex-col gap-5 items-center" *rxLet="finished$; let finished">
+  <p *rxLet="lastChampion$; let lastChampion">
     Yesterday's Champion
-    <span class="text-blue-500 font-semibold"
-      >#{{ (lastChampion$ | async)?.number }}</span
-    >
+    <span class="text-blue-500 font-semibold">#{{ lastChampion?.number }}</span>
     was
     <span class="text-green-500 font-semibold"
-      >{{ (lastChampion$ | async)?.name }} - Set {{ (lastChampion$ | async)?.set
-      }}</span
+      >{{ lastChampion?.name }} - Set {{ lastChampion?.set }}</span
     >.
   </p>
   <div
-    *ngIf="randomChampion$ | async as randomChampion"
+    *rxLet="guessChampion$; let guessChampion"
     class="p-5 rounded flex flex-col gap-3 items-center primary-input w-[20rem]"
   >
     <p class="font-semibold text-xl">Guess the Trait's</p>
     <p class="font-semibold flex gap-6 items-center">
       <img
-        [src]="randomChampion.imagePath"
-        *ngIf="randomChampion.name"
+        [src]="guessChampion?.imagePath"
+        *ngIf="guessChampion?.name"
         class="h-20 w-20"
       />
-      <span>{{ randomChampion.name }} - Set {{ randomChampion.set }}</span>
+      <span>{{ guessChampion?.name }} - Set {{ guessChampion?.set }}</span>
     </p>
-    <div *ngIf="finished$ | async" class="flex flex-col gap-1">
+    <div *ngIf="finished" class="flex flex-col gap-1">
       <p class="w-full font-semibold text-center">
         You Correctly guessed all Trait's in
-        <span class="text-green-400">{{ guessCount$ | async }}</span> Tries!
+        <span class="text-green-400">{{ guesses.length }}</span> Tries!
       </p>
       <div
         class="flex items-center gap-2 hover:cursor-pointer justify-center"
@@ -37,134 +34,15 @@
       </div>
     </div>
 
-    <div
-      class="flex gap-2 items-center justify-start w-full"
-      *ngIf="!(finished$ | async)"
-    >
-      <app-question-mark-icon
-        class="w-5 h-5 flex-shrink-0"
-      ></app-question-mark-icon>
-      <p
-        class="text-sm text-gray-400"
-        *ngIf="(statClueCounter$ | async) ?? 0 > 0; else statClue"
-      >
-        Champions Stat Clue in
-        <span class="text-white font-bold">{{ statClueCounter$ | async }}</span>
-        tries.
-      </p>
-      <ng-template #statClue>
-        <div
-          class="flex flex-col gap-0.5"
-          *ngIf="statClue$ | async as statClue"
-        >
-          <div class="flex gap-1 items-center">
-            <p class="text-sm text-gray-400">Cost:</p>
-            <div class="flex gap-1 items-center">
-              <span class="text-white font-bold text-sm"
-                >{{ statClue.cost }}</span
-              >
-              <app-gold-icon class="w-4 h-4"></app-gold-icon>
-            </div>
-          </div>
-          <p class="text-sm text-gray-400">
-            Traitcount:
-            <span class="text-white font-bold">{{ statClue.traitCount }}</span>
-          </p>
-          <p class="text-sm text-gray-400">
-            One Trait starts with:
-            <span class="text-white font-bold"
-              >"{{ statClue.oneTraitStartsWith }}"</span
-            >
-          </p>
-        </div>
-      </ng-template>
-    </div>
-    <div
-      class="flex gap-2 items-center justify-start w-full"
-      *ngIf="!(finished$ | async)"
-    >
-      <app-question-mark-icon
-        class="w-5 h-5 flex-shrink-0"
-      ></app-question-mark-icon>
-      <p
-        class="text-sm text-gray-400"
-        *ngIf="(traitClueCounter$ | async) ?? 0 > 0; else traitClue"
-      >
-        Champions with same Trait Clue in
-        <span class="text-white font-bold"
-          >{{ traitClueCounter$ | async }}</span
-        >
-        tries.
-      </p>
-      <ng-template #traitClue>
-        <div class="flex flex-wrap gap-2">
-          <p class="text-sm text-gray-400">
-            Champions with at least one same Trait:
-          </p>
-          <p
-            *ngFor="let clue of sameTraitClue$ | async; let i = index"
-            class="text-sm text-gray-400 flex"
-          >
-            <span>{{ clue }}</span>
-            <span *ngIf="((sameTraitClue$ | async)?.length ?? 0) - 1 !== i"
-              >,</span
-            >
-          </p>
-        </div>
-      </ng-template>
-    </div>
+    <app-trait-clue *ngIf="!finished" class="w-full"></app-trait-clue>
   </div>
-  <p *ngIf="errorMessage$ | async" class="text-center text-sm text-red-400">
-    {{ errorMessage$ | async }}
-  </p>
-  <div
-    class="relative w-[20rem]"
-    *ngIf="!(finished$ | async)"
-    (clickOutside)="handleClickOutSide()"
-  >
-    <div class="flex gap-2 items-center">
-      <input
-        type="text"
-        class="px-4 py-2 w-full primary-input"
-        [ngModel]="query"
-        (focus)="handleFocus()"
-        (ngModelChange)="handleChange($event)"
-        placeholder="Search for Traits"
-      />
-      <button
-        class="px-4 py-2 font-semibold secondary-input disabled:opacity-50"
-        [style.borderColor]="'#AE9667'"
-        (click)="guess()"
-        [disabled]="selectedTrait === undefined"
-      >
-        Guess
-      </button>
-    </div>
-
-    <div
-      class="absolute w-full max-h-72 overflow-y-auto z-10"
-      *ngIf="showResults"
-      [@inOutAnimation]
-      [style.backgroundColor]="'#1d2328'"
-    >
-      <p
-        class="w-full text-center font-semibold p-2"
-        *ngIf="(results$ | async)?.length === 0; else results"
-      >
-        No results found.
-      </p>
-      <ng-template #results>
-        <div
-          *ngFor="let result of results$ | async"
-          class="w-full px-4 py-2 hover:cursor-pointer hover:bg-[#22262B] transition-colors flex items-center gap-2"
-          (click)="selectGuess(result)"
-        >
-          <img [src]="result.imagePath" class="w-5 h-5" />
-          <p>{{ result.label }}</p>
-        </div>
-      </ng-template>
-    </div>
-  </div>
+  <app-result-form
+    (queryChange)="handleQueryChange($event)"
+    [(selectedResult)]="selectedTrait"
+    (handleGuess)="guess()"
+    [results]="(results$ | async)"
+    [placeholder]="'Search for Traits'"
+  ></app-result-form>
 
   <div class="flex items-start gap-2 flex-wrap w-[20rem]">
     <div

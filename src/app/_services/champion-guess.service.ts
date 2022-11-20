@@ -46,7 +46,6 @@ export class ChampionGuessService implements OnInit {
 
   ngOnInit(): void {
     this.wrongGuessCount$.subscribe((count) => {
-      console.log(count);
       if (count === 0) {
         this.getTraitClue();
       }

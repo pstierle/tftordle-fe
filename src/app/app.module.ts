@@ -9,6 +9,7 @@ import { AppComponent } from "./app.component";
 import { NavbarComponent } from "./views/navbar/navbar.component";
 import { AppRoutingModule } from "./app-routing.module";
 import { CommonModule } from "@angular/common";
+import { LetModule } from "@rx-angular/template";
 
 @NgModule({
   declarations: [AppComponent, NavbarComponent],
@@ -19,6 +20,7 @@ import { CommonModule } from "@angular/common";
     HttpClientModule,
     OverlayModule,
     AppRoutingModule,
+    LetModule,
   ],
   providers: [ModalService],
   bootstrap: [AppComponent],

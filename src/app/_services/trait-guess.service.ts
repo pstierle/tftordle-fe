@@ -31,104 +31,30 @@ export interface ITrait {
   providedIn: "root",
 })
 export class TraitGuessService {
-  randomChampion$ = new BehaviorSubject<ITraitGuessChampion | undefined>(
-    undefined
-  );
-  sameTraitClue$ = new BehaviorSubject<string[]>([]);
-  statClue$ = new BehaviorSubject<IStatClue | undefined>(undefined);
-  correctGuesses$ = new BehaviorSubject<ITrait[]>([]);
-  wrongGuesses$ = new BehaviorSubject<ITrait[]>([]);
-  traitQueryResults$ = new BehaviorSubject<ITrait[]>([]);
-  finished$ = new BehaviorSubject<boolean>(false);
-  guessCount$ = new BehaviorSubject<number>(0);
-  errorMessage$ = new BehaviorSubject<string | undefined>(undefined);
-  traitClueCounter$ = new BehaviorSubject<number>(6);
-  statClueCounter$ = new BehaviorSubject<number>(3);
   constructor(private http: HttpClient) {}
 
   url = environment.apiUrl + "/trait-guess";
 
   getTraitGuessChampion() {
-    this.http
-      .get<ITraitGuessChampion>(this.url + "/champion")
-      .subscribe((champion) => this.randomChampion$.next(champion));
+    return this.http.get<ITraitGuessChampion>(this.url + "/champion");
   }
 
   queryTraits(query: string) {
-    this.http
-      .get<ITrait[]>(this.url + "/query-traits/" + query)
-      .subscribe((results) =>
-        this.traitQueryResults$.next(
-          results.filter(
-            (result) =>
-              ![
-                ...this.correctGuesses$.getValue().map((g) => g.label),
-                ...this.wrongGuesses$.getValue().map((g) => g.label),
-              ].includes(result.label)
-          )
-        )
-      );
+    return this.http.get<ITrait[]>(this.url + "/query-traits/" + query);
   }
 
   getSameTraitClue() {
-    this.http
-      .get<string[]>(this.url + "/same-trait-clue")
-      .subscribe((clues) => this.sameTraitClue$.next(clues));
+    return this.http.get<string[]>(this.url + "/same-trait-clue");
   }
 
   getStatClue() {
-    this.http
-      .get<IStatClue>(this.url + "/stat-clue")
-      .subscribe((statClue) => this.statClue$.next(statClue));
+    return this.http.get<IStatClue>(this.url + "/stat-clue");
   }
 
   checkGuess(trait: ITrait) {
-    this.http
-      .get<IGuessResponse>(this.url + "/check-guess/" + trait.label)
-      .subscribe((guessResponse) => {
-        this.guessCount$.next(this.guessCount$.getValue() + 1);
-
-        if (guessResponse.correct) {
-          this.correctGuesses$.next([
-            ...this.correctGuesses$.getValue(),
-            guessResponse.guess,
-          ]);
-          if (this.correctGuesses$.getValue().length === guessResponse.needed) {
-            this.finished$.next(true);
-          }
-        } else {
-          if (this.traitClueCounter$.getValue() > 0) {
-            this.traitClueCounter$.next(this.traitClueCounter$.getValue() - 1);
-            console.log(this.traitClueCounter$.getValue());
-            if (this.traitClueCounter$.getValue() === 0) {
-              this.getSameTraitClue();
-            }
-          }
-          if (this.statClueCounter$.getValue() > 0) {
-            this.statClueCounter$.next(this.statClueCounter$.getValue() - 1);
-            if (this.statClueCounter$.getValue() === 0) {
-              this.getStatClue();
-            }
-          }
-
-          this.wrongGuesses$.next([
-            ...this.wrongGuesses$.getValue(),
-            guessResponse.guess,
-          ]);
-        }
-
-        this.traitQueryResults$.next(
-          this.traitQueryResults$
-            .getValue()
-            .filter(
-              (result) =>
-                ![
-                  ...this.correctGuesses$.getValue().map((g) => g.label),
-                  ...this.wrongGuesses$.getValue().map((g) => g.label),
-                ].includes(result.label)
-            )
-        );
-      });
+    return this.http.get<IGuessResponse>(
+      this.url + "/check-guess/" + trait.label
+    );
   }
 
   getLastChampion() {

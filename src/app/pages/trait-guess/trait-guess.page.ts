@@ -1,8 +1,18 @@
+import { BaseComponent } from "./../../components/base.component";
+import { TraitGuessStore } from "./../../_store/trait-guess.store";
 import { trigger } from "@angular/animations";
 import { Component, OnInit } from "@angular/core";
-import { Observable, Subject, debounceTime, filter } from "rxjs";
+import {
+  Observable,
+  Subject,
+  debounceTime,
+  filter,
+  of,
+  mergeMap,
+  map,
+  takeUntil,
+} from "rxjs";
 import { inOut } from "src/app/_animations/animations";
-import { ILastChampion } from "src/app/_models/models";
 import {
   TraitGuessService,
   ITrait,
@@ -15,74 +25,68 @@ import { Clipboard } from "@angular/cdk/clipboard";
   styleUrls: [],
   animations: [trigger("inOutAnimation", inOut)],
 })
-export class TraitGuessPage implements OnInit {
+export class TraitGuessPage extends BaseComponent implements OnInit {
   constructor(
     private traitGuessService: TraitGuessService,
-    private clipboard: Clipboard
-  ) {}
-
-  randomChampion$ = this.traitGuessService.randomChampion$;
-  results$ = this.traitGuessService.traitQueryResults$;
-  sameTraitClue$ = this.traitGuessService.sameTraitClue$;
-  statClue$ = this.traitGuessService.statClue$;
-  correctGuesses$ = this.traitGuessService.correctGuesses$;
-  wrongGuesses$ = this.traitGuessService.wrongGuesses$;
-  finished$ = this.traitGuessService.finished$;
-  guessCount$ = this.traitGuessService.guessCount$;
-  errorMessage$ = this.traitGuessService.errorMessage$;
-  traitClueCounter$ = this.traitGuessService.traitClueCounter$;
-  statClueCounter$ = this.traitGuessService.statClueCounter$;
-  lastChampion$!: Observable<ILastChampion>;
-  selectedTrait?: ITrait;
-
-  query$ = new Subject<string>();
-  query = "";
-  showResults = false;
-
-  ngOnInit(): void {
-    this.traitGuessService.getTraitGuessChampion();
-    this.query$
-      .pipe(
-        debounceTime(200),
-        filter((query) => !!query)
-      )
-      .subscribe((query) => this.traitGuessService.queryTraits(query));
-    this.lastChampion$ = this.traitGuessService.getLastChampion();
+    private clipboard: Clipboard,
+    private store: TraitGuessStore
+  ) {
+    super();
   }
 
-  handleChange(query: string) {
+  guessChampion$ = this.store.getGuessChampion$();
+  lastChampion$ = this.store.getLastChampion$();
+  finished$ = this.store.getFinished$();
+  results$: Observable<ITrait[]> = of([]);
+  correctGuesses$ = this.store.getCorrectGuesses$();
+  wrongGuesses$ = this.store.getWrongGuesses$();
+  selectedTrait?: ITrait;
+  guesses: ITrait[] = [];
+
+  query$ = new Subject<string>();
+
+  ngOnInit(): void {
+    this.results$ = this.query$.pipe(
+      debounceTime(200),
+      filter((query) => !!query),
+      mergeMap((query) => this.traitGuessService.queryTraits(query)),
+      map((traits) => {
+        return traits.filter(
+          (trait) => !this.guesses.map((g) => g.label).includes(trait.label)
+        );
+      })
+    );
+
+    this.store
+      .getGuesses$()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
+        (guesses) =>
+          (this.guesses = guesses.map((g) => {
+            return {
+              label: g.trait.label,
+              imagePath: g.trait.imagePath,
+            };
+          }))
+      );
+  }
+
+  handleQueryChange(query: string) {
     this.query$.next(query);
-    this.query = query;
-    this.errorMessage$.next(undefined);
     this.selectedTrait = undefined;
   }
 
   guess() {
     if (this.selectedTrait) {
-      this.traitGuessService.checkGuess(this.selectedTrait);
-      this.showResults = false;
+      this.store.checkGuess(this.selectedTrait);
       this.selectedTrait = undefined;
-      this.query = "";
     }
   }
 
-  handleFocus() {
-    this.showResults = true;
-  }
-
-  selectGuess(result: ITrait) {
-    this.query = result.label;
-    this.selectedTrait = result;
-    this.showResults = false;
-  }
-
-  handleClickOutSide() {
-    this.showResults = false;
-  }
-
   copyShareLink() {
-    this.clipboard.copy(
-      `I found the Tftordle guess trait's in ${this.guessCount$.getValue()} tries! https://www.tftordle.com/`
-    );
+    navigator.share({
+      url: "https://www.tftordle.com/",
+      text: "I found the Tftordle guess trait's in ${this.guesses.length} tries!",
+    });
   }
 }
