@@ -7,31 +7,40 @@
       (ngModelChange)="handleChange($event)"
       [placeholder]="placeholder"
     />
-    <button
-      class="px-4 py-2 font-semibold secondary-input disabled:opacity-50"
-      [style.borderColor]="'#AE9667'"
-      (click)="guess()"
-      [disabled]="selectedResult === undefined"
-    >
-      Guess
-    </button>
+    <app-loading-spinner-icon
+      *ngIf="guessLoading; else guessButton"
+    ></app-loading-spinner-icon>
+    <ng-template #guessButton>
+      <button
+        class="px-4 py-2 font-semibold secondary-input disabled:opacity-50"
+        [style.borderColor]="'#AE9667'"
+        (click)="guess()"
+        [disabled]="selectedResult === undefined"
+      >
+        Guess
+      </button>
+    </ng-template>
   </div>
-
   <div
     class="absolute w-full max-h-72 overflow-y-auto z-10"
     [@inOutAnimation]
     [style.backgroundColor]="'#1d2328'"
   >
-    <div
-      *ngFor="let result of results"
-      class="w-full px-4 py-2 hover:cursor-pointer hover:bg-[#22262B] transition-colors flex items-center gap-2"
-      (click)="selectResult(result)"
-    >
-      <img [src]="result.imagePath" class="w-5 h-5" />
-      <p>
-        {{ result.label ?? result.name }}
-        <span *ngIf="result.set">- Set: {{ result.set }} </span>
-      </p>
-    </div>
+    <app-loading-spinner-icon
+      *ngIf="resultsLoading; else resultsTemplate"
+    ></app-loading-spinner-icon>
+    <ng-template #resultsTemplate>
+      <div
+        *ngFor="let result of results"
+        class="w-full px-4 py-2 hover:cursor-pointer hover:bg-[#22262B] transition-colors flex items-center gap-2"
+        (click)="selectResult(result)"
+      >
+        <img [src]="result.imagePath" class="w-5 h-5" />
+        <p>
+          {{ result.label ?? result.name }}
+          <span *ngIf="result.set">- Set: {{ result.set }} </span>
+        </p>
+      </div>
+    </ng-template>
   </div>
 </div>

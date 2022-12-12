@@ -1,21 +1,17 @@
-import { BaseComponent } from "./../components/base.component";
+import { championGuessRoutes } from "./../_constants/endpoints.contants";
+import { BaseStore } from "./base.store";
 import { Injectable } from "@angular/core";
 import { BehaviorSubject, map, takeUntil } from "rxjs";
 import { ChampionGuessService } from "../_services/champion-guess.service";
-import {
-  IChampionGuessChampion,
-  IChampionGuessResult,
-} from "../_models/models";
+import { IChampionGuessChampion } from "../_models/models";
 
 @Injectable({
   providedIn: "root",
 })
-export class ChampionGuessStore extends BaseComponent {
-  private lastChampion$ = this.championGuessService.getLastChampion();
+export class ChampionGuessStore extends BaseStore {
   private guesses$ = new BehaviorSubject<IChampionGuessChampion[]>([]);
   private finished$ = new BehaviorSubject<boolean>(false);
   private traitClue$ = new BehaviorSubject<string[]>([]);
-
   readonly traitClueThreshold = 3;
 
   constructor(private championGuessService: ChampionGuessService) {
@@ -31,17 +27,26 @@ export class ChampionGuessStore extends BaseComponent {
   getGuesses$() {
     return this.guesses$.asObservable();
   }
-  getLastChampion$() {
-    return this.lastChampion$;
-  }
   setFinished(finished: boolean) {
     this.finished$.next(finished);
+  }
+  fetchLastChampion() {
+    this.championGuessService
+      .getLastChampion()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((champion) => {
+        this.lastChampion$.next(champion);
+        this.removeLoadingEndpoint(championGuessRoutes.lastChampion);
+      });
   }
   generateTraitClue() {
     this.championGuessService
       .getTraitClue()
       .pipe(takeUntil(this.destroy$))
-      .subscribe((clue) => this.traitClue$.next(clue));
+      .subscribe((clue) => {
+        this.removeLoadingEndpoint(championGuessRoutes.traitClue);
+        this.traitClue$.next(clue);
+      });
   }
   getGuessCount$() {
     return this.guesses$.pipe(map((guesses) => guesses.length));
@@ -51,6 +56,7 @@ export class ChampionGuessStore extends BaseComponent {
       .checkGuess(champion)
       .pipe(takeUntil(this.destroy$))
       .subscribe((results) => {
+        this.removeLoadingEndpoint(championGuessRoutes.checkGuess);
         this.guesses$.next([
           {
             ...champion,

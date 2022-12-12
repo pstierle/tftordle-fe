@@ -8,4 +8,5 @@ import { Component, Input } from "@angular/core";
 export class ClueComponent {
   @Input() label!: string;
   @Input() displayClue!: boolean;
+  @Input() loading: boolean = false;
 }

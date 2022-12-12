@@ -1,8 +1,17 @@
-<p *rxLet="lastChampion$; let lastChampion">
-  Yesterday's Champion
-  <span class="text-blue-500 font-semibold">#{{ lastChampion?.number }}</span>
-  was
-  <span class="text-green-500 font-semibold"
-    >{{ lastChampion?.name }} - Set {{ lastChampion?.set }}</span
-  >.
-</p>
+<div *ngIf="loading; else lastChampion" class="flex items-center gap-2">
+  <p>Yesterday's Champion was</p>
+  <app-loading-spinner-icon></app-loading-spinner-icon>
+</div>
+<ng-template #lastChampion>
+  <p class="flex items-center">
+    Yesterday's Champion
+    <span class="text-blue-500 font-semibold"
+      >#{{ (lastChampion$ | async)?.number }}</span
+    >
+    was
+    <span class="text-green-500 font-semibold"
+      >{{ (lastChampion$ | async)?.name }} - Set
+      {{ (lastChampion$ | async)?.set }}</span
+    >.
+  </p>
+</ng-template>

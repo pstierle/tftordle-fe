@@ -1,3 +1,4 @@
+import { LoadingSpinnerIconComponent } from "./loading-spinner-icon.component";
 import { ShareIconComponent } from "./share-icon.component";
 import { GoldIconComponent } from "./gold-icon.component";
 import { UpArrowIconComponent } from "./up-arrow-icon";
@@ -12,6 +13,7 @@ import { CheckIconComponent } from "./check-icon.compontent";
     UpArrowIconComponent,
     GoldIconComponent,
     ShareIconComponent,
+    LoadingSpinnerIconComponent,
   ],
   exports: [
     QuestionIconMarkComponent,
@@ -19,6 +21,7 @@ import { CheckIconComponent } from "./check-icon.compontent";
     UpArrowIconComponent,
     GoldIconComponent,
     ShareIconComponent,
+    LoadingSpinnerIconComponent,
   ],
 })
 export class IconModule {}

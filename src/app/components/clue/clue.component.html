@@ -1,11 +1,16 @@
-<div class="flex gap-2">
+<div class="flex gap-2 items-center">
   <app-question-mark-icon
     class="w-5 h-5 flex-shrink-0"
   ></app-question-mark-icon>
-  <p class="text-gray-400" *ngIf="!displayClue; else clue">
-    {{ label }}
-  </p>
-  <ng-template #clue>
-    <ng-content></ng-content>
+  <app-loading-spinner-icon
+    *ngIf="loading; else content"
+  ></app-loading-spinner-icon>
+  <ng-template #content>
+    <p class="text-gray-400" *ngIf="!displayClue; else clue">
+      {{ label }}
+    </p>
+    <ng-template #clue>
+      <ng-content></ng-content>
+    </ng-template>
   </ng-template>
 </div>

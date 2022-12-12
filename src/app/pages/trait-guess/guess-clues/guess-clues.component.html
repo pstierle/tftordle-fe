@@ -1,4 +1,8 @@
-<app-clue [label]="statClueLabel" [displayClue]="showClues.stat">
+<app-clue
+  [label]="statClueLabel"
+  [displayClue]="showClues.stat"
+  [loading]="!!(statClueLoading$ | async)"
+>
   <div class="flex flex-col gap-0.5" *rxLet="statClue$; let statClue">
     <div class="flex gap-1 items-center">
       <p class="text-sm text-gray-400">Cost:</p>
@@ -20,7 +24,11 @@
   </div>
 </app-clue>
 
-<app-clue [label]="traitClueLabel" [displayClue]="showClues.trait">
+<app-clue
+  [label]="traitClueLabel"
+  [displayClue]="showClues.trait"
+  [loading]="!!(sameTraitClueLoading$ | async)"
+>
   <div class="flex flex-wrap gap-2" *rxLet="sameTraitClue$; let sameTraitClue">
     <p class="text-sm text-gray-400">Champions with at least one same Trait:</p>
     <p

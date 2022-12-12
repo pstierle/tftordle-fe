@@ -1,3 +1,4 @@
+import { traitGuessRoutes } from "./../../_constants/endpoints.contants";
 import { BaseComponent } from "./../../components/base.component";
 import { TraitGuessStore } from "./../../_store/trait-guess.store";
 import { trigger } from "@angular/animations";
@@ -14,7 +15,6 @@ import {
 } from "rxjs";
 import { inOut } from "src/app/_animations/animations";
 import { TraitGuessService } from "src/app/_services/trait-guess.service";
-import { Clipboard } from "@angular/cdk/clipboard";
 import { ITrait } from "src/app/_models/models";
 
 @Component({
@@ -37,9 +37,17 @@ export class TraitGuessPage extends BaseComponent implements OnInit {
   results$: Observable<ITrait[]> = of([]);
   correctGuesses$ = this.store.getCorrectGuesses$();
   wrongGuesses$ = this.store.getWrongGuesses$();
+  lastChampionLoading$ = this.store.getEndpointLoading$(
+    traitGuessRoutes.lastChampion
+  );
+  championLoading$ = this.store.getEndpointLoading$(traitGuessRoutes.champion);
+  resultsLoading$ = this.store.getEndpointLoading$(
+    traitGuessRoutes.queryTraits
+  );
+  guessLoading$ = this.store.getEndpointLoading$(traitGuessRoutes.checkGuess);
   selectedTrait?: ITrait;
   guesses: ITrait[] = [];
-
+  traitGuessRoutes = traitGuessRoutes;
   query$ = new Subject<string>();
 
   ngOnInit(): void {
@@ -48,6 +56,7 @@ export class TraitGuessPage extends BaseComponent implements OnInit {
       filter((query) => !!query),
       mergeMap((query) => this.traitGuessService.queryTraits(query)),
       map((traits) => {
+        this.store.removeLoadingEndpoint(traitGuessRoutes.queryTraits);
         return traits.filter(
           (trait) => !this.guesses.map((g) => g.label).includes(trait.label)
         );
@@ -66,6 +75,9 @@ export class TraitGuessPage extends BaseComponent implements OnInit {
             };
           }))
       );
+
+    this.store.fetchLastChampion();
+    this.store.fetchGuessChampion();
   }
 
   handleQueryChange(query: string) {

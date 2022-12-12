@@ -8,5 +8,6 @@ import { Component, Input } from "@angular/core";
   styleUrls: [],
 })
 export class LastChampionComponent {
-  @Input() lastChampion$!: Observable<ILastChampion>;
+  @Input() lastChampion$!: Observable<ILastChampion | undefined>;
+  @Input() loading: boolean = false;
 }

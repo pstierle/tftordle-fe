@@ -2,6 +2,7 @@ import { BaseComponent } from "./../../../components/base.component";
 import { takeUntil, tap } from "rxjs";
 import { ChampionGuessStore } from "./../../../_store/champion-guess.store";
 import { Component, OnInit } from "@angular/core";
+import { championGuessRoutes } from "src/app/_constants/endpoints.contants";
 
 @Component({
   selector: "app-guess-clues",
@@ -16,6 +17,9 @@ export class GuessCluesComponent extends BaseComponent implements OnInit {
   guessCount: number = 0;
   traitClueThreshold = this.championGuessStore.traitClueThreshold;
   traitClue$ = this.championGuessStore.getTraitClue$();
+  traitClueLoading$ = this.championGuessStore.getEndpointLoading$(
+    championGuessRoutes.traitClue
+  );
 
   ngOnInit(): void {
     this.championGuessStore

@@ -1,5 +1,11 @@
-import { IStatClue, ITrait, ITraitGuess } from "./../_models/models";
-import { BaseComponent } from "./../components/base.component";
+import { BaseStore } from "./base.store";
+import { traitGuessRoutes } from "./../_constants/endpoints.contants";
+import {
+  IStatClue,
+  ITrait,
+  ITraitGuess,
+  ITraitGuessChampion,
+} from "./../_models/models";
 import { Injectable } from "@angular/core";
 import { BehaviorSubject, map, takeUntil } from "rxjs";
 import { TraitGuessService } from "../_services/trait-guess.service";
@@ -7,9 +13,10 @@ import { TraitGuessService } from "../_services/trait-guess.service";
 @Injectable({
   providedIn: "root",
 })
-export class TraitGuessStore extends BaseComponent {
-  private guessChampion$ = this.traitGuessService.getTraitGuessChampion();
-  private lastChampion$ = this.traitGuessService.getLastChampion();
+export class TraitGuessStore extends BaseStore {
+  private guessChampion$ = new BehaviorSubject<ITraitGuessChampion | undefined>(
+    undefined
+  );
 
   private guesses$ = new BehaviorSubject<ITraitGuess[]>([]);
   private finished$ = new BehaviorSubject<boolean>(false);
@@ -44,31 +51,53 @@ export class TraitGuessStore extends BaseComponent {
     );
   }
   getGuessChampion$() {
-    return this.guessChampion$;
+    return this.guessChampion$.asObservable();
   }
   getGuesses$() {
     return this.guesses$.asObservable();
   }
-  getLastChampion$() {
-    return this.lastChampion$;
+  fetchLastChampion() {
+    this.traitGuessService
+      .getLastChampion()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((champion) => {
+        this.removeLoadingEndpoint(traitGuessRoutes.lastChampion);
+        this.lastChampion$.next(champion);
+      });
+  }
+  fetchGuessChampion() {
+    this.traitGuessService
+      .getTraitGuessChampion()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((champion) => {
+        this.removeLoadingEndpoint(traitGuessRoutes.champion);
+        this.guessChampion$.next(champion);
+      });
   }
   generateStatClue() {
     this.traitGuessService
       .getStatClue()
       .pipe(takeUntil(this.destroy$))
-      .subscribe((clue) => this.statClue$.next(clue));
+      .subscribe((clue) => {
+        this.removeLoadingEndpoint(traitGuessRoutes.statClue);
+        this.statClue$.next(clue);
+      });
   }
   generateSameTraitClue() {
     this.traitGuessService
       .getSameTraitClue()
       .pipe(takeUntil(this.destroy$))
-      .subscribe((clue) => this.sameTraitClue$.next(clue));
+      .subscribe((clue) => {
+        this.removeLoadingEndpoint(traitGuessRoutes.sameTraitClue);
+        this.sameTraitClue$.next(clue);
+      });
   }
   checkGuess(trait: ITrait) {
     this.traitGuessService
       .checkGuess(trait)
       .pipe(takeUntil(this.destroy$))
       .subscribe((response) => {
+        this.removeLoadingEndpoint(traitGuessRoutes.checkGuess);
         this.guesses$.next([
           ...this.guesses$.getValue(),
           {

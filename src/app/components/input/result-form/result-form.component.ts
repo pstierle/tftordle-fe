@@ -11,6 +11,8 @@ import { inOut } from "src/app/_animations/animations";
 export class ResultFormComponent {
   @Input() results: any = [];
   @Input() placeholder!: string;
+  @Input() resultsLoading: boolean = false;
+  @Input() guessLoading: boolean = false;
 
   @Input() query!: string;
   @Output() queryChange = new EventEmitter<string>();

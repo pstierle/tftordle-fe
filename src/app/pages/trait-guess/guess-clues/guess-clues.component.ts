@@ -1,3 +1,4 @@
+import { traitGuessRoutes } from "./../../../_constants/endpoints.contants";
 import { BaseComponent } from "../../../components/base.component";
 import { Component, OnInit } from "@angular/core";
 import { TraitGuessStore } from "src/app/_store/trait-guess.store";
@@ -14,7 +15,11 @@ export class GuessCluesComponent extends BaseComponent implements OnInit {
   }
 
   sameTraitClue$ = this.store.getSameTraitClue$();
+  sameTraitClueLoading$ = this.store.getEndpointLoading$(
+    traitGuessRoutes.sameTraitClue
+  );
   statClue$ = this.store.getStatClue$();
+  statClueLoading$ = this.store.getEndpointLoading$(traitGuessRoutes.statClue);
   wrongGuesses = this.store.getWrongGuesses$();
 
   showClues = {

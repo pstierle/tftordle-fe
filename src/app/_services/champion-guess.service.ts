@@ -1,3 +1,4 @@
+import { championGuessRoutes } from "./../_constants/endpoints.contants";
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { environment } from "src/environments/environment";
@@ -13,25 +14,27 @@ import {
 export class ChampionGuessService {
   constructor(private http: HttpClient) {}
 
-  url = environment.apiUrl + "/champion-guess";
-
   queryChampions(query: string) {
     return this.http.get<IChampionGuessChampion[]>(
-      this.url + "/query-champions/" + query
+      championGuessRoutes.queryChampions,
+      { params: { query } }
     );
   }
 
   getLastChampion() {
-    return this.http.get<ILastChampion>(this.url + "/last");
+    return this.http.get<ILastChampion>(championGuessRoutes.lastChampion);
   }
 
   getTraitClue() {
-    return this.http.get<string[]>(this.url + "/trait-clue");
+    return this.http.get<string[]>(championGuessRoutes.traitClue);
   }
 
   checkGuess(champion: IChampionGuessChampion) {
     return this.http.get<IChampionGuessResult[]>(
-      environment.apiUrl + "/champion-guess/check-guess-attr/" + champion.id
+      championGuessRoutes.checkGuess,
+      {
+        params: { championId: champion.id },
+      }
     );
   }
 }

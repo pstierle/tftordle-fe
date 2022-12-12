@@ -1,3 +1,4 @@
+import { championGuessRoutes } from "./../../_constants/endpoints.contants";
 import { BaseComponent } from "./../../components/base.component";
 import { ChampionGuessService } from "./../../_services/champion-guess.service";
 import { Component, OnInit } from "@angular/core";
@@ -40,13 +41,25 @@ export class ChampionGuessPage extends BaseComponent implements OnInit {
   guesses: IChampionGuessChampion[] = [];
   finished$ = this.championGuessStore.getFinished$();
   results$: Observable<IChampionGuessChampion[]> = of([]);
-
+  championGuessRoutes = championGuessRoutes;
+  lastChampionLoading$ = this.championGuessStore.getEndpointLoading$(
+    championGuessRoutes.lastChampion
+  );
+  resultsLoading$ = this.championGuessStore.getEndpointLoading$(
+    championGuessRoutes.queryChampions
+  );
+  guessLoading$ = this.championGuessStore.getEndpointLoading$(
+    championGuessRoutes.checkGuess
+  );
   ngOnInit(): void {
     this.results$ = this.query$.pipe(
       debounceTime(200),
       filter((query) => !!query),
       mergeMap((query) => this.championGuessService.queryChampions(query)),
       map((results) => {
+        this.championGuessStore.removeLoadingEndpoint(
+          championGuessRoutes.queryChampions
+        );
         return results.filter(
           (result) => !this.guesses.map((g) => g.id).includes(result.id)
         );
@@ -57,6 +70,8 @@ export class ChampionGuessPage extends BaseComponent implements OnInit {
       .getGuesses$()
       .pipe(takeUntil(this.destroy$))
       .subscribe((guesses) => (this.guesses = guesses));
+
+    this.championGuessStore.fetchLastChampion();
   }
 
   handleQueryChange(query: string) {

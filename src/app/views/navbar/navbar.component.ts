@@ -15,7 +15,7 @@ export class NavbarComponent implements OnInit {
   timeRemaining: number = 0;
 
   ngOnInit() {
-    this.http.get(environment.apiUrl + "/reset-timer").subscribe((timer) => {
+    this.http.get("/reset-timer").subscribe((timer) => {
       this.timeRemaining = Number(timer);
       setInterval(() => {
         this.timeRemaining -= 1;

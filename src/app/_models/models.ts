@@ -55,3 +55,12 @@ export interface IChampionGuessResponse {
   correct: boolean;
   invalidChampion?: boolean;
 }
+
+export interface traitGuessEndpoints {
+  lastChampion: string;
+  checkGuess: string;
+  statClue: string;
+  sameTraitClue: string;
+  queryTraits: string;
+  champion: string;
+}
