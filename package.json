@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "scripts": {
     "build": "ng build",
-    "dev": "ng serve"
+    "dev": "ng serve",
+    "start": "node express.js"
   },
   "private": true,
   "dependencies": {
@@ -19,6 +20,7 @@
     "@angular/router": "^14.2.0",
     "@rx-angular/cdk": "^1.0.0-rc.2",
     "@rx-angular/template": "^1.0.0-rc.3",
+    "express": "^4.18.2",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"
