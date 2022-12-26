@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: "https://oyster-app-jqjom.ondigitalocean.app",
+  apiUrl: "https://tftordle-be-43wsq.ondigitalocean.app",
 };
