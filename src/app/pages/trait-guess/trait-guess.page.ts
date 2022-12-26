@@ -37,14 +37,13 @@ export class TraitGuessPage extends BaseComponent implements OnInit {
   results$: Observable<ITrait[]> = of([]);
   correctGuesses$ = this.store.getCorrectGuesses$();
   wrongGuesses$ = this.store.getWrongGuesses$();
-  lastChampionLoading$ = this.store.getEndpointLoading$(
+  lastChampionLoading$ = this.store.isEndpointLoading$(
     traitGuessRoutes.lastChampion
   );
-  championLoading$ = this.store.getEndpointLoading$(traitGuessRoutes.champion);
-  resultsLoading$ = this.store.getEndpointLoading$(
-    traitGuessRoutes.queryTraits
-  );
-  guessLoading$ = this.store.getEndpointLoading$(traitGuessRoutes.checkGuess);
+  championLoading$ = this.store.isEndpointLoading$(traitGuessRoutes.champion);
+  resultsLoading$ = this.store.isEndpointLoading$(traitGuessRoutes.queryTraits);
+  guessLoading$ = this.store.isEndpointLoading$(traitGuessRoutes.checkGuess);
+
   selectedTrait?: ITrait;
   guesses: ITrait[] = [];
   traitGuessRoutes = traitGuessRoutes;
@@ -55,9 +54,9 @@ export class TraitGuessPage extends BaseComponent implements OnInit {
       debounceTime(200),
       filter((query) => !!query),
       mergeMap((query) => this.traitGuessService.queryTraits(query)),
-      map((traits) => {
-        this.store.removeLoadingEndpoint(traitGuessRoutes.queryTraits);
-        return traits.filter(
+      map(({ data, endpoint }) => {
+        this.store.removeLoadingEndpoint(endpoint);
+        return data.filter(
           (trait) => !this.guesses.map((g) => g.label).includes(trait.label)
         );
       })

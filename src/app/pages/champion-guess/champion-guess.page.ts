@@ -42,13 +42,13 @@ export class ChampionGuessPage extends BaseComponent implements OnInit {
   finished$ = this.championGuessStore.getFinished$();
   results$: Observable<IChampionGuessChampion[]> = of([]);
   championGuessRoutes = championGuessRoutes;
-  lastChampionLoading$ = this.championGuessStore.getEndpointLoading$(
+  lastChampionLoading$ = this.championGuessStore.isEndpointLoading$(
     championGuessRoutes.lastChampion
   );
-  resultsLoading$ = this.championGuessStore.getEndpointLoading$(
+  resultsLoading$ = this.championGuessStore.isEndpointLoading$(
     championGuessRoutes.queryChampions
   );
-  guessLoading$ = this.championGuessStore.getEndpointLoading$(
+  guessLoading$ = this.championGuessStore.isEndpointLoading$(
     championGuessRoutes.checkGuess
   );
   ngOnInit(): void {
@@ -86,21 +86,21 @@ export class ChampionGuessPage extends BaseComponent implements OnInit {
   }
 
   matchStateClass(results: IChampionGuessResult[], attr: string) {
-    const matchState = results.find((r) => r.attrLabel === attr)?.matchState;
+    const match = results.find((r) => r.attribute === attr)?.match;
 
-    return matchState === "exact"
+    return match === "exact"
       ? "green-border"
-      : matchState === "wrong"
+      : match === "wrong"
       ? "red-border"
       : "yellow-border";
   }
 
   matchStateByAttrresults(results: IChampionGuessResult[], attr: string) {
-    return results.find((r) => r.attrLabel === attr);
+    return results.find((r) => r.attribute === attr);
   }
 
   checkFinished(results: IChampionGuessResult[]) {
-    const mapped = results.map((r) => r.matchState);
+    const mapped = results.map((r) => r.match);
     const finished = mapped.every((v) => v === "exact");
     this.championGuessStore.setFinished(finished);
   }

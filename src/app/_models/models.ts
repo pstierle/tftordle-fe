@@ -20,7 +20,7 @@ export interface IStatClue {
   traitCount: number;
 }
 
-export interface IGuessResponse {
+export interface ITraitGuessResult {
   correct: boolean;
   needed?: number;
   guess: ITrait;
@@ -34,9 +34,9 @@ export interface ITrait {
 export type Match = "exact" | "higher" | "lower" | "wrong" | "some";
 
 export interface IChampionGuessResult {
-  attrLabel: string;
-  matchState: Match;
-  userGuessValue: any;
+  attribute: string;
+  match: Match;
+  value: any;
 }
 
 export interface IChampionGuessChampion {

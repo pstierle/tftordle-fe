@@ -4,7 +4,7 @@ export const championGuessRoutes = {
   queryChampions: championGuessPrefix + "/query-champions",
   lastChampion: championGuessPrefix + "/last",
   traitClue: championGuessPrefix + "/trait-clue",
-  checkGuess: championGuessPrefix + "/check-guess-attr",
+  checkGuess: championGuessPrefix + "/check-guess",
 };
 
 export const traitGuessPrefix = "/trait-guess";

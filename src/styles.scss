@@ -20,6 +20,11 @@ body {
     url("./assets/background.jpg");
 }
 
+input {
+  background-color: transparent;
+  outline: none;
+}
+
 .primary-input {
   background-color: #1d2328;
   border: 2.5px solid #0a6f82;

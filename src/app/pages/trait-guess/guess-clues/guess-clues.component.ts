@@ -15,11 +15,11 @@ export class GuessCluesComponent extends BaseComponent implements OnInit {
   }
 
   sameTraitClue$ = this.store.getSameTraitClue$();
-  sameTraitClueLoading$ = this.store.getEndpointLoading$(
+  sameTraitClueLoading$ = this.store.isEndpointLoading$(
     traitGuessRoutes.sameTraitClue
   );
   statClue$ = this.store.getStatClue$();
-  statClueLoading$ = this.store.getEndpointLoading$(traitGuessRoutes.statClue);
+  statClueLoading$ = this.store.isEndpointLoading$(traitGuessRoutes.statClue);
   wrongGuesses = this.store.getWrongGuesses$();
 
   showClues = {

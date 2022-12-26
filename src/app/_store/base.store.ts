@@ -1,12 +1,12 @@
-import { BaseComponent } from "./../components/base.component";
-import { Injectable } from "@angular/core";
-import { BehaviorSubject, map } from "rxjs";
+import { IBaseResponse } from "./../_services/base-api.service";
+import { Injectable, OnDestroy } from "@angular/core";
+import { BehaviorSubject, map, takeUntil, Observable, Subject, of } from "rxjs";
 import { ILastChampion } from "../_models/models";
 
 @Injectable({
   providedIn: "root",
 })
-export class BaseStore extends BaseComponent {
+export class BaseStore implements OnDestroy {
   protected loadingEndpoints$ = new BehaviorSubject<string[] | undefined>(
     undefined
   );
@@ -14,6 +14,15 @@ export class BaseStore extends BaseComponent {
   protected lastChampion$ = new BehaviorSubject<ILastChampion | undefined>(
     undefined
   );
+
+  protected destroy$: Subject<void> = new Subject<void>();
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.unsubscribe();
+  }
+
+  constructor() {}
 
   addLoadingEndpoint(endpoint: string) {
     const currentEndpoints = this.loadingEndpoints$.getValue() ?? [];
@@ -26,9 +35,18 @@ export class BaseStore extends BaseComponent {
   getLastChampion$() {
     return this.lastChampion$.asObservable();
   }
-  getEndpointLoading$(endpoint: string) {
-    return this.loadingEndpoints$.pipe(
-      map((endpoints) => endpoints?.includes(endpoint))
+  isEndpointLoading$(endpoint: string) {
+    return of(false);
+  }
+  resolveEndpoint<T>(response$: Observable<IBaseResponse<T>>) {
+    return response$.pipe(
+      map((value) => {
+        // const currentEndpoints = this.loadingEndpoints$.getValue() ?? [];
+        // this.loadingEndpoints$.next(
+        //   currentEndpoints.filter((e) => e !== value.endpoint)
+        // );
+        return value.data;
+      })
     );
   }
 }

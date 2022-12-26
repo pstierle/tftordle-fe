@@ -1,3 +1,4 @@
+import { ILastChampion } from "src/app/_models/models";
 import { BaseStore } from "./base.store";
 import { traitGuessRoutes } from "./../_constants/endpoints.contants";
 import {
@@ -5,9 +6,10 @@ import {
   ITrait,
   ITraitGuess,
   ITraitGuessChampion,
+  ITraitGuessResult,
 } from "./../_models/models";
 import { Injectable } from "@angular/core";
-import { BehaviorSubject, map, takeUntil } from "rxjs";
+import { BehaviorSubject, map, takeUntil, Observable } from "rxjs";
 import { TraitGuessService } from "../_services/trait-guess.service";
 
 @Injectable({
@@ -56,46 +58,43 @@ export class TraitGuessStore extends BaseStore {
   getGuesses$() {
     return this.guesses$.asObservable();
   }
+
   fetchLastChampion() {
     this.traitGuessService
       .getLastChampion()
-      .pipe(takeUntil(this.destroy$))
+      .pipe(this.resolveEndpoint<ILastChampion>)
       .subscribe((champion) => {
-        this.removeLoadingEndpoint(traitGuessRoutes.lastChampion);
         this.lastChampion$.next(champion);
       });
   }
   fetchGuessChampion() {
     this.traitGuessService
       .getTraitGuessChampion()
-      .pipe(takeUntil(this.destroy$))
+      .pipe(this.resolveEndpoint<ITraitGuessChampion>)
       .subscribe((champion) => {
-        this.removeLoadingEndpoint(traitGuessRoutes.champion);
         this.guessChampion$.next(champion);
       });
   }
   generateStatClue() {
     this.traitGuessService
       .getStatClue()
-      .pipe(takeUntil(this.destroy$))
+      .pipe(this.resolveEndpoint<IStatClue>)
       .subscribe((clue) => {
-        this.removeLoadingEndpoint(traitGuessRoutes.statClue);
         this.statClue$.next(clue);
       });
   }
   generateSameTraitClue() {
     this.traitGuessService
       .getSameTraitClue()
-      .pipe(takeUntil(this.destroy$))
+      .pipe(this.resolveEndpoint<string[]>)
       .subscribe((clue) => {
-        this.removeLoadingEndpoint(traitGuessRoutes.sameTraitClue);
         this.sameTraitClue$.next(clue);
       });
   }
   checkGuess(trait: ITrait) {
     this.traitGuessService
       .checkGuess(trait)
-      .pipe(takeUntil(this.destroy$))
+      .pipe(this.resolveEndpoint<ITraitGuessResult>)
       .subscribe((response) => {
         this.removeLoadingEndpoint(traitGuessRoutes.checkGuess);
         this.guesses$.next([

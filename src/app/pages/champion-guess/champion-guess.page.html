@@ -74,7 +74,7 @@
           <p>{{ element.set }}</p>
           <app-match-icon
             [matchState]="
-              matchStateByAttrresults(element.results, 'set')?.matchState
+              matchStateByAttrresults(element.results, 'set')?.match
             "
           ></app-match-icon>
         </div>
@@ -94,7 +94,7 @@
           <app-gold-icon class="w-4 h-4"></app-gold-icon>
           <app-match-icon
             [matchState]="
-              matchStateByAttrresults(element.results, 'cost')?.matchState
+              matchStateByAttrresults(element.results, 'cost')?.match
             "
           ></app-match-icon>
         </div>
@@ -113,7 +113,7 @@
           <p>{{ element.range }}</p>
           <app-match-icon
             [matchState]="
-              matchStateByAttrresults(element.results, 'range')?.matchState
+              matchStateByAttrresults(element.results, 'range')?.match
             "
           ></app-match-icon>
         </div>

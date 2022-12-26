@@ -17,7 +17,7 @@ export class GuessCluesComponent extends BaseComponent implements OnInit {
   guessCount: number = 0;
   traitClueThreshold = this.championGuessStore.traitClueThreshold;
   traitClue$ = this.championGuessStore.getTraitClue$();
-  traitClueLoading$ = this.championGuessStore.getEndpointLoading$(
+  traitClueLoading$ = this.championGuessStore.isEndpointLoading$(
     championGuessRoutes.traitClue
   );
 
