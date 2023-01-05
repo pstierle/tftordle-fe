@@ -26,23 +26,29 @@ import { ITrait } from "src/app/_models/models";
 export class TraitGuessPage extends BaseComponent implements OnInit {
   constructor(
     private traitGuessService: TraitGuessService,
-    private store: TraitGuessStore
+    private traitGuessStore: TraitGuessStore
   ) {
     super();
   }
 
-  guessChampion$ = this.store.getGuessChampion$();
-  lastChampion$ = this.store.getLastChampion$();
-  finished$ = this.store.getFinished$();
+  guessChampion$ = this.traitGuessStore.getGuessChampion$();
+  lastChampion$ = this.traitGuessStore.getLastChampion$();
+  finished$ = this.traitGuessStore.getFinished$();
   results$: Observable<ITrait[]> = of([]);
-  correctGuesses$ = this.store.getCorrectGuesses$();
-  wrongGuesses$ = this.store.getWrongGuesses$();
-  lastChampionLoading$ = this.store.isEndpointLoading$(
+  correctGuesses$ = this.traitGuessStore.getCorrectGuesses$();
+  wrongGuesses$ = this.traitGuessStore.getWrongGuesses$();
+  lastChampionLoading$ = this.traitGuessStore.isEndpointLoading$(
     traitGuessRoutes.lastChampion
   );
-  championLoading$ = this.store.isEndpointLoading$(traitGuessRoutes.champion);
-  resultsLoading$ = this.store.isEndpointLoading$(traitGuessRoutes.queryTraits);
-  guessLoading$ = this.store.isEndpointLoading$(traitGuessRoutes.checkGuess);
+  championLoading$ = this.traitGuessStore.isEndpointLoading$(
+    traitGuessRoutes.champion
+  );
+  resultsLoading$ = this.traitGuessStore.isEndpointLoading$(
+    traitGuessRoutes.queryTraits
+  );
+  guessLoading$ = this.traitGuessStore.isEndpointLoading$(
+    traitGuessRoutes.checkGuess
+  );
 
   selectedTrait?: ITrait;
   guesses: ITrait[] = [];
@@ -55,14 +61,14 @@ export class TraitGuessPage extends BaseComponent implements OnInit {
       filter((query) => !!query),
       mergeMap((query) => this.traitGuessService.queryTraits(query)),
       map(({ data, endpoint }) => {
-        this.store.removeLoadingEndpoint(endpoint);
+        this.traitGuessStore.removeLoadingEndpoint(endpoint);
         return data.filter(
           (trait) => !this.guesses.map((g) => g.label).includes(trait.label)
         );
       })
     );
 
-    this.store
+    this.traitGuessStore
       .getGuesses$()
       .pipe(takeUntil(this.destroy$))
       .subscribe(
@@ -75,8 +81,8 @@ export class TraitGuessPage extends BaseComponent implements OnInit {
           }))
       );
 
-    this.store.fetchLastChampion();
-    this.store.fetchGuessChampion();
+    this.traitGuessStore.fetchLastChampion();
+    this.traitGuessStore.fetchGuessChampion();
   }
 
   handleQueryChange(query: string) {
@@ -86,7 +92,7 @@ export class TraitGuessPage extends BaseComponent implements OnInit {
 
   guess() {
     if (this.selectedTrait) {
-      this.store.checkGuess(this.selectedTrait);
+      this.traitGuessStore.checkGuess(this.selectedTrait);
       this.selectedTrait = undefined;
     }
   }

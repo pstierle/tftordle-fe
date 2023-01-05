@@ -1,5 +1,4 @@
-import { IBaseResponse } from "./../_services/base-api.service";
-import { BehaviorSubject, map, Observable, of } from "rxjs";
+import { BehaviorSubject, Observable, of, map } from "rxjs";
 import { ILastChampion } from "../_models/models";
 
 export class BaseStore {
@@ -23,14 +22,8 @@ export class BaseStore {
     return this.lastChampion$.asObservable();
   }
   isEndpointLoading$(endpoint: string) {
-    return of(false);
-  }
-  resolveEndpoint<T>(response$: Observable<IBaseResponse<T>>) {
-    return response$.pipe(
-      map((value) => {
-        //this.removeLoadingEndpoint(value.endpoint);
-        return value.data;
-      })
+    return this.loadingEndpoints$.pipe(
+      map((endpoints) => endpoints?.includes(endpoint))
     );
   }
 }

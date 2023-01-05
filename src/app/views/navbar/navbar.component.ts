@@ -1,5 +1,4 @@
 import { HttpClient } from "@angular/common/http";
-import { environment } from "../../../environments/environment";
 import { ResetModalComponent } from "../../components/modals/reset-modal/reset-modal.component";
 import { ModalService } from "../../_services/modal.service";
 import { Component, OnInit } from "@angular/core";

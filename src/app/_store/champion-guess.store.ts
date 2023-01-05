@@ -33,18 +33,16 @@ export class ChampionGuessStore extends BaseStore {
   fetchLastChampion() {
     this.championGuessService
       .getLastChampion()
-      .pipe(this.resolveEndpoint<ILastChampion>)
-      .subscribe((champion) => {
-        this.lastChampion$.next(champion);
+      .subscribe(({ endpoint, data }) => {
+        this.removeLoadingEndpoint(endpoint);
+        this.lastChampion$.next(data);
       });
   }
   generateTraitClue() {
-    this.championGuessService
-      .getTraitClue()
-      .pipe(this.resolveEndpoint<string[]>)
-      .subscribe((clue) => {
-        this.traitClue$.next(clue);
-      });
+    this.championGuessService.getTraitClue().subscribe(({ endpoint, data }) => {
+      this.removeLoadingEndpoint(endpoint);
+      this.traitClue$.next(data);
+    });
   }
   getGuessCount$() {
     return this.guesses$.pipe(map((guesses) => guesses.length));
@@ -52,13 +50,13 @@ export class ChampionGuessStore extends BaseStore {
   checkGuess(champion: IChampionGuessChampion) {
     this.championGuessService
       .checkGuess(champion)
-      .pipe(this.resolveEndpoint<IChampionGuessResult[]>)
-      .subscribe((results) => {
+      .subscribe(({ endpoint, data }) => {
+        this.removeLoadingEndpoint(endpoint);
         this.guesses$.next([
           {
             ...champion,
-            traits: results.find((r) => r.attribute === "traits")?.value,
-            results: results,
+            traits: data.find((r) => r.attribute === "traits")?.value,
+            results: data,
           },
           ...this.guesses$.getValue(),
         ]);

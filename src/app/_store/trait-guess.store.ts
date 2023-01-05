@@ -61,58 +61,51 @@ export class TraitGuessStore extends BaseStore {
   }
 
   fetchLastChampion() {
-    this.traitGuessService
-      .getLastChampion()
-      .pipe(this.resolveEndpoint<ILastChampion>)
-      .subscribe((champion) => {
-        this.lastChampion$.next(champion);
-      });
+    this.traitGuessService.getLastChampion().subscribe(({ endpoint, data }) => {
+      this.removeLoadingEndpoint(endpoint);
+      this.lastChampion$.next(data);
+    });
   }
   fetchGuessChampion() {
     this.traitGuessService
       .getTraitGuessChampion()
-      .pipe(this.resolveEndpoint<ITraitGuessChampion>)
-      .subscribe((champion) => {
-        this.guessChampion$.next(champion);
+      .subscribe(({ endpoint, data }) => {
+        this.removeLoadingEndpoint(endpoint);
+        this.guessChampion$.next(data);
       });
   }
   generateStatClue() {
-    this.traitGuessService
-      .getStatClue()
-      .pipe(this.resolveEndpoint<IStatClue>)
-      .subscribe((clue) => {
-        this.statClue$.next(clue);
-      });
+    this.traitGuessService.getStatClue().subscribe(({ endpoint, data }) => {
+      this.removeLoadingEndpoint(endpoint);
+      this.statClue$.next(data);
+    });
   }
   generateSameTraitClue() {
     this.traitGuessService
       .getSameTraitClue()
-      .pipe(this.resolveEndpoint<string[]>)
-      .subscribe((clue) => {
-        this.sameTraitClue$.next(clue);
+      .subscribe(({ endpoint, data }) => {
+        this.removeLoadingEndpoint(endpoint);
+        this.sameTraitClue$.next(data);
       });
   }
   checkGuess(trait: ITrait) {
-    this.traitGuessService
-      .checkGuess(trait)
-      .pipe(this.resolveEndpoint<ITraitGuessResult>)
-      .subscribe((response) => {
-        this.removeLoadingEndpoint(traitGuessRoutes.checkGuess);
-        this.guesses$.next([
-          ...this.guesses$.getValue(),
-          {
-            correct: response.correct,
-            trait: response.guess,
-          },
-        ]);
-        if (response.correct && response.needed) {
-          if (
-            this.guesses$.getValue().filter((g) => g.correct).length >=
-            response.needed
-          ) {
-            this.finished$.next(true);
-          }
+    this.traitGuessService.checkGuess(trait).subscribe(({ endpoint, data }) => {
+      this.removeLoadingEndpoint(endpoint);
+      this.guesses$.next([
+        ...this.guesses$.getValue(),
+        {
+          correct: data.correct,
+          trait: data.guess,
+        },
+      ]);
+      if (data.correct && data.needed) {
+        if (
+          this.guesses$.getValue().filter((g) => g.correct).length >=
+          data.needed
+        ) {
+          this.finished$.next(true);
         }
-      });
+      }
+    });
   }
 }
