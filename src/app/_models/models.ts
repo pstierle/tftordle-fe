@@ -29,6 +29,7 @@ export interface ITraitGuessResult {
 export interface ITrait {
   label: string;
   imagePath: string;
+  correct?: boolean;
 }
 
 export type Match = "exact" | "higher" | "lower" | "wrong" | "some";

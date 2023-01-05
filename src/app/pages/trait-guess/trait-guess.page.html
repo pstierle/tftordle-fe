@@ -8,7 +8,7 @@
     [loading]="!!(lastChampionLoading$ | async)"
   ></app-last-champion>
   <div
-    class="p-5 rounded flex flex-col gap-3 items-center primary-input w-[20rem]"
+    class="p-5 rounded flex flex-col gap-3 items-center primary-input w-[21rem]"
   >
     <p class="font-semibold text-xl">Guess the Trait's</p>
     <p
@@ -53,27 +53,15 @@
     [placeholder]="'Search for Traits'"
   ></app-result-form>
 
-  <div class="flex items-start gap-2 flex-wrap w-[20rem]">
+  <div class="flex gap-2 flex-wrap justify-center" [style.width]="'40vw'">
     <div
-      *ngFor="let guess of correctGuesses$ | async"
+      *ngFor="let guess of guesses"
       [style.backgroundColor]="'#1E2328'"
-      class="px-4 py-2 green-border flex justify-between items-center gap-2 guess"
+      class="px-4 py-2 flex justify-between items-center gap-2 guess"
+      [ngClass]="guess.correct ? 'green-border' : 'red-border'"
     >
       <img [src]="guess.imagePath" class="w-5 h-5" />
       <p>{{ guess.label }}</p>
     </div>
   </div>
-
-  <div class="flex flex-wrap gap-2 items-start w-[20rem]">
-    <div
-      *ngFor="let guess of wrongGuesses$ | async"
-      [style.backgroundColor]="'#1E2328'"
-      class="px-4 py-2 red-border flex justify-between items-center gap-2 guess"
-    >
-      <img [src]="guess.imagePath" class="w-5 h-5" />
-      <p>{{ guess.label }}</p>
-    </div>
-  </div>
-
-  <app-home-button class="mt-5"></app-home-button>
 </div>

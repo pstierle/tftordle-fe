@@ -1,10 +1,12 @@
 <app-clue
   [displayClue]="guessCount >= traitClueThreshold"
-  [label]="clueLabel"
+  [label]="'Trait Clue'"
+  [counter]="clueCounter"
   [loading]="!!(traitClueLoading$ | async)"
 >
   <div
-    class="flex flex-wrap gap-1 items-center"
+    class="flex flex-wrap gap-1 items-center px-2 py-1 rounded-sm"
+    [style.backgroundColor]="'#1a1f24'"
     *rxLet="traitClue$; let traitClue"
   >
     <p class="text-sm text-gray-400">Trait's:</p>

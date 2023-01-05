@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component } from "@angular/core";
 
 @Component({
-  selector: 'app-question-mark-icon',
+  selector: "app-question-mark-icon",
   template: `
     <svg
       xmlns="http://www.w3.org/2000/svg"

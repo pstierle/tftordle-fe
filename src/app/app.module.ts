@@ -1,3 +1,4 @@
+import { UiModule } from "./components/ui-module";
 import { ModalService } from "./_services/modal.service";
 import { NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
@@ -22,6 +23,7 @@ import { BackendInterceptor } from "./_interceptor/backend.interceptor";
     OverlayModule,
     AppRoutingModule,
     LetModule,
+    UiModule,
   ],
   providers: [
     ModalService,

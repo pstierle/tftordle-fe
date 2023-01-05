@@ -35,8 +35,6 @@ export class TraitGuessPage extends BaseComponent implements OnInit {
   lastChampion$ = this.traitGuessStore.getLastChampion$();
   finished$ = this.traitGuessStore.getFinished$();
   results$: Observable<ITrait[]> = of([]);
-  correctGuesses$ = this.traitGuessStore.getCorrectGuesses$();
-  wrongGuesses$ = this.traitGuessStore.getWrongGuesses$();
   lastChampionLoading$ = this.traitGuessStore.isEndpointLoading$(
     traitGuessRoutes.lastChampion
   );
@@ -77,6 +75,7 @@ export class TraitGuessPage extends BaseComponent implements OnInit {
             return {
               label: g.trait.label,
               imagePath: g.trait.imagePath,
+              correct: g.correct,
             };
           }))
       );

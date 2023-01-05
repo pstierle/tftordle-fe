@@ -49,15 +49,11 @@ export class GuessCluesComponent extends BaseComponent implements OnInit {
     });
   }
 
-  get statClueLabel() {
-    return `Stat Clue in ${
-      this.store.statClueThreshold - this.wrongGuessCount
-    } tries`;
+  get statClueCounter() {
+    return this.store.statClueThreshold - this.wrongGuessCount;
   }
 
-  get traitClueLabel() {
-    return `Trait Clue in ${
-      this.store.sameTraitClueThreshold - this.wrongGuessCount
-    } tries`;
+  get traitClueCounter() {
+    return this.store.sameTraitClueThreshold - this.wrongGuessCount;
   }
 }

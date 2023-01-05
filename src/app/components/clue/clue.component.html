@@ -1,5 +1,6 @@
-<div class="flex gap-2 items-center">
+<div class="gap-2 items-center" [ngClass]="!displayClue ? 'flex' : 'block'">
   <app-question-mark-icon
+    *ngIf="!displayClue"
     class="w-5 h-5 flex-shrink-0"
   ></app-question-mark-icon>
   <app-loading-spinner-icon
@@ -7,7 +8,7 @@
   ></app-loading-spinner-icon>
   <ng-template #content>
     <p class="text-gray-400" *ngIf="!displayClue; else clue">
-      {{ label }}
+      <span>{{ label }}</span> in <span>{{ counter }}</span> tries
     </p>
     <ng-template #clue>
       <ng-content></ng-content>

@@ -33,9 +33,7 @@ export class GuessCluesComponent extends BaseComponent implements OnInit {
       });
   }
 
-  get clueLabel() {
-    return `Trait Clue in ${
-      this.championGuessStore.traitClueThreshold - this.guessCount
-    } tries`;
+  get clueCounter() {
+    return this.championGuessStore.traitClueThreshold - this.guessCount;
   }
 }

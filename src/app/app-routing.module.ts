@@ -1,20 +1,21 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
+import { AppRoutes } from "./_constants/routes.contant";
 
 const routes: Routes = [
   {
     path: "",
-    redirectTo: "home",
+    redirectTo: AppRoutes.HOME,
     pathMatch: "full",
   },
   {
-    path: "home",
+    path: AppRoutes.HOME,
     loadChildren: () =>
       import("./pages/home/home.module").then((m) => m.HomeModule),
     canActivate: [],
   },
   {
-    path: "trait",
+    path: AppRoutes.TRAIT,
     loadChildren: () =>
       import("./pages/trait-guess/trait-guess.module").then(
         (m) => m.TraitGuessModule
@@ -22,7 +23,7 @@ const routes: Routes = [
     canActivate: [],
   },
   {
-    path: "champion",
+    path: AppRoutes.CHAMPION,
     loadChildren: () =>
       import("./pages/champion-guess/champion-guess.module").then(
         (m) => m.ChampionGuessModule
