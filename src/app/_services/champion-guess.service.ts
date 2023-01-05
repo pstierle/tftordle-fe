@@ -7,34 +7,34 @@ import {
   IChampionGuessResult,
   ILastChampion,
 } from "../_models/models";
+import { BaseApiService } from "./base-api.service";
 
 @Injectable({
   providedIn: "root",
 })
-export class ChampionGuessService {
-  constructor(private http: HttpClient) {}
+export class ChampionGuessService extends BaseApiService {
+  constructor(http: HttpClient) {
+    super(http);
+  }
 
   queryChampions(query: string) {
-    return this.http.get<IChampionGuessChampion[]>(
+    return this.get<IChampionGuessChampion[]>(
       championGuessRoutes.queryChampions,
       { params: { query } }
     );
   }
 
   getLastChampion() {
-    return this.http.get<ILastChampion>(championGuessRoutes.lastChampion);
+    return this.get<ILastChampion>(championGuessRoutes.lastChampion);
   }
 
   getTraitClue() {
-    return this.http.get<string[]>(championGuessRoutes.traitClue);
+    return this.get<string[]>(championGuessRoutes.traitClue);
   }
 
   checkGuess(champion: IChampionGuessChampion) {
-    return this.http.get<IChampionGuessResult[]>(
-      championGuessRoutes.checkGuess,
-      {
-        params: { championId: champion.id },
-      }
-    );
+    return this.get<IChampionGuessResult[]>(championGuessRoutes.checkGuess, {
+      params: { championId: champion.id },
+    });
   }
 }

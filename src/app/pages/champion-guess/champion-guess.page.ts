@@ -56,11 +56,9 @@ export class ChampionGuessPage extends BaseComponent implements OnInit {
       debounceTime(200),
       filter((query) => !!query),
       mergeMap((query) => this.championGuessService.queryChampions(query)),
-      map((results) => {
-        this.championGuessStore.removeLoadingEndpoint(
-          championGuessRoutes.queryChampions
-        );
-        return results.filter(
+      map(({ data, endpoint }) => {
+        this.championGuessStore.removeLoadingEndpoint(endpoint);
+        return data.filter(
           (result) => !this.guesses.map((g) => g.id).includes(result.id)
         );
       })

@@ -3,7 +3,10 @@
   <app-loading-spinner-icon></app-loading-spinner-icon>
 </div>
 <ng-template #lastChampion>
-  <p class="flex items-center">
+  <p
+    class="flex items-center gap-2"
+    *ngIf="!!(lastChampion$ | async); else noLastChampion"
+  >
     Yesterday's Champion
     <span class="text-blue-500 font-semibold"
       >#{{ (lastChampion$ | async)?.number }}</span
@@ -14,4 +17,7 @@
       {{ (lastChampion$ | async)?.set }}</span
     >.
   </p>
+  <ng-template #noLastChampion>
+    <p>No last Champion on record.</p>
+  </ng-template>
 </ng-template>

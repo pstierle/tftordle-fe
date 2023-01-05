@@ -1,26 +1,13 @@
 import { IBaseResponse } from "./../_services/base-api.service";
-import { Injectable, OnDestroy } from "@angular/core";
-import { BehaviorSubject, map, takeUntil, Observable, Subject, of } from "rxjs";
+import { BehaviorSubject, map, Observable, of } from "rxjs";
 import { ILastChampion } from "../_models/models";
 
-@Injectable({
-  providedIn: "root",
-})
-export class BaseStore implements OnDestroy {
-  protected loadingEndpoints$ = new BehaviorSubject<string[] | undefined>(
+export class BaseStore {
+  public loadingEndpoints$ = new BehaviorSubject<string[] | undefined>([]);
+
+  public lastChampion$ = new BehaviorSubject<ILastChampion | undefined>(
     undefined
   );
-
-  protected lastChampion$ = new BehaviorSubject<ILastChampion | undefined>(
-    undefined
-  );
-
-  protected destroy$: Subject<void> = new Subject<void>();
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.unsubscribe();
-  }
 
   constructor() {}
 
@@ -41,10 +28,7 @@ export class BaseStore implements OnDestroy {
   resolveEndpoint<T>(response$: Observable<IBaseResponse<T>>) {
     return response$.pipe(
       map((value) => {
-        // const currentEndpoints = this.loadingEndpoints$.getValue() ?? [];
-        // this.loadingEndpoints$.next(
-        //   currentEndpoints.filter((e) => e !== value.endpoint)
-        // );
+        //this.removeLoadingEndpoint(value.endpoint);
         return value.data;
       })
     );

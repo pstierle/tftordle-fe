@@ -9,8 +9,9 @@ import {
   ITraitGuessResult,
 } from "./../_models/models";
 import { Injectable } from "@angular/core";
-import { BehaviorSubject, map, takeUntil, Observable } from "rxjs";
+import { BehaviorSubject, map, takeUntil, Observable, of } from "rxjs";
 import { TraitGuessService } from "../_services/trait-guess.service";
+import { IBaseResponse } from "../_services/base-api.service";
 
 @Injectable({
   providedIn: "root",

@@ -1,10 +1,9 @@
-import { championGuessRoutes } from "./../_constants/endpoints.contants";
+import { IChampionGuessResult } from "./../_models/models";
 import { BaseStore } from "./base.store";
 import { Injectable } from "@angular/core";
-import { BehaviorSubject, map, Observable, takeUntil } from "rxjs";
+import { BehaviorSubject, map } from "rxjs";
 import { ChampionGuessService } from "../_services/champion-guess.service";
 import { IChampionGuessChampion, ILastChampion } from "../_models/models";
-import { IBaseResponse } from "../_services/base-api.service";
 
 @Injectable({
   providedIn: "root",
@@ -32,31 +31,37 @@ export class ChampionGuessStore extends BaseStore {
     this.finished$.next(finished);
   }
   fetchLastChampion() {
-    this.championGuessService.getLastChampion().subscribe((champion) => {
-      this.lastChampion$.next(champion);
-      this.removeLoadingEndpoint(championGuessRoutes.lastChampion);
-    });
+    this.championGuessService
+      .getLastChampion()
+      .pipe(this.resolveEndpoint<ILastChampion>)
+      .subscribe((champion) => {
+        this.lastChampion$.next(champion);
+      });
   }
   generateTraitClue() {
-    this.championGuessService.getTraitClue().subscribe((clue) => {
-      this.removeLoadingEndpoint(championGuessRoutes.traitClue);
-      this.traitClue$.next(clue);
-    });
+    this.championGuessService
+      .getTraitClue()
+      .pipe(this.resolveEndpoint<string[]>)
+      .subscribe((clue) => {
+        this.traitClue$.next(clue);
+      });
   }
   getGuessCount$() {
     return this.guesses$.pipe(map((guesses) => guesses.length));
   }
   checkGuess(champion: IChampionGuessChampion) {
-    this.championGuessService.checkGuess(champion).subscribe((results) => {
-      this.removeLoadingEndpoint(championGuessRoutes.checkGuess);
-      this.guesses$.next([
-        {
-          ...champion,
-          traits: results.find((r) => r.attribute === "traits")?.value,
-          results: results,
-        },
-        ...this.guesses$.getValue(),
-      ]);
-    });
+    this.championGuessService
+      .checkGuess(champion)
+      .pipe(this.resolveEndpoint<IChampionGuessResult[]>)
+      .subscribe((results) => {
+        this.guesses$.next([
+          {
+            ...champion,
+            traits: results.find((r) => r.attribute === "traits")?.value,
+            results: results,
+          },
+          ...this.guesses$.getValue(),
+        ]);
+      });
   }
 }
